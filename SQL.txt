@@ -1,0 +1,665 @@
+
+PS C:\Users\Hp> mysql -u root -p
+Enter password: **********
+
+mysql> show databases
+    -> ;
++--------------------+
+| Database           |
++--------------------+
+| abc                |
+| college            |
+| information_schema |
+| mydb               |
+| mysql              |
+| performance_schema |
+| pp                 |
+| pp50               |
+| sys                |
+| temp               |
++--------------------+
+10 rows in set (0.07 sec)
+
+mysql> use pp50
+Database changed
+mysql> show tables;
++----------------+
+| Tables_in_pp50 |
++----------------+
+| custo          |
+| customer       |
+| employee       |
+| p_order        |
+| p_order1       |
+| person         |
+| salesman       |
+| store          |
+| student        |
++----------------+
+9 rows in set (0.00 sec)
+
+mysql> select *from Person;
++-----+-------+-------+--------+
+| pId | pname | Email | padd   |
++-----+-------+-------+--------+
+|   1 | sagar | gokul | GM     |
+|   2 | Monya | Pinku | Pune   |
+|   3 | Raju  | M@    | Mumbai |
++-----+-------+-------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select *from Person;
++-----+-------+-------+--------+------+
+| pId | pname | Email | padd   | Pmob |
++-----+-------+-------+--------+------+
+|   1 | sagar | gokul | GM     | NULL |
+|   2 | Monya | Pinku | Pune   | NULL |
+|   3 | Raju  | M@    | Mumbai | NULL |
++-----+-------+-------+--------+------+
+3 rows in set (0.00 sec)
+
+mysql> insert into Person(Pmob) values(10);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from Person;
++-----+-------+-------+--------+------+
+| pId | pname | Email | padd   | Pmob |
++-----+-------+-------+--------+------+
+|   1 | sagar | gokul | GM     | NULL |
+|   2 | Monya | Pinku | Pune   | NULL |
+|   3 | Raju  | M@    | Mumbai | NULL |
+|   4 | NULL  | NULL  | NULL   |   10 |
++-----+-------+-------+--------+------+
+4 rows in set (0.00 sec)
+
+mysql> update table Pmob set Pmob=911276 where pId=1;
+
+mysql> select *from Person;
++-----+-------+-------+--------+--------+
+| pId | pname | Email | padd   | Pmob   |
++-----+-------+-------+--------+--------+
+|   1 | sagar | gokul | GM     | 911276 |
+|   2 | Monya | Pinku | Pune   |   NULL |
+|   3 | Raju  | M@    | Mumbai |   NULL |
+|   4 | NULL  | NULL  | NULL   |     10 |
++-----+-------+-------+--------+--------+
+4 rows in set (0.00 sec)
+
+mysql> update Person set Pmob=928477 where pId=2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Person set Pmob=911234 where pId=3;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Person set Pmob=911235 where pId=4;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Person set Pmob=91125 where pId=3;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from Person;
++-----+-------+-------+--------+--------+
+| pId | pname | Email | padd   | Pmob   |
++-----+-------+-------+--------+--------+
+|   1 | sagar | gokul | GM     | 911276 |
+|   2 | Monya | Pinku | Pune   | 928477 |
+|   3 | Raju  | M@    | Mumbai |  91125 |
+|   4 | NULL  | NULL  | NULL   | 911235 |
++-----+-------+-------+--------+--------+
+4 rows in set (0.00 sec)
+
+mysql> update Person padd set padd="Ahilyanagar" where pId=4;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from Person;
++-----+-------+-------+-------------+--------+
+| pId | pname | Email | padd        | Pmob   |
++-----+-------+-------+-------------+--------+
+|   1 | sagar | gokul | GM          | 911276 |
+|   2 | Monya | Pinku | Pune        | 928477 |
+|   3 | Raju  | M@    | Mumbai      |  91125 |
+|   4 | NULL  | NULL  | Ahilyanagar | 911235 |
++-----+-------+-------+-------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> desc Person;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| pId   | int         | NO   | PRI | NULL    | auto_increment |
+| pname | varchar(50) | YES  |     | NULL    |                |
+| Email | varchar(50) | YES  | UNI | NULL    |                |
+| padd  | varchar(30) | YES  |     | NULL    |                |
+| Pmob  | int         | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+5 rows in set (0.11 sec)
+
+mysql> select *from Person limit 2;
++-----+-------+-------+------+--------+
+| pId | pname | Email | padd | Pmob   |
++-----+-------+-------+------+--------+
+|   1 | sagar | gokul | GM   | 911276 |
+|   2 | Monya | Pinku | Pune | 928477 |
++-----+-------+-------+------+--------+
+2 rows in set (0.01 sec)
+
+mysql> update Person set padd=NULL where pId=2;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> desc Person;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| pId   | int         | NO   | PRI | NULL    | auto_increment |
+| pname | varchar(50) | YES  |     | NULL    |                |
+| Email | varchar(50) | YES  | UNI | NULL    |                |
+| padd  | varchar(30) | YES  |     | NULL    |                |
+| Pmob  | int         | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+5 rows in set (0.01 sec)
+
+
+mysql> update Person set padd="Jalgaon" where pId=2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from Person;
++-----+-------+-------+-------------+--------+
+| pId | pname | Email | padd        | Pmob   |
++-----+-------+-------+-------------+--------+
+|   1 | sagar | gokul | GM          | 911276 |
+|   2 | Monya | Pinku | Jalgaon     | 928477 |
+|   3 | Raju  | M@    | Mumbai      |  91125 |
+|   4 | NULL  | NULL  | Ahilyanagar | 911235 |
++-----+-------+-------+-------------+--------+
+4 rows in set (0.00 sec)
+
+
+//we use auto_increment either we need to use the Primary key or unique constraints..
+mysql> create table Demo(id int primary key  auto_increment,name varchar(20),Email varchar(40),addr varchar(60));
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> select *from Demo;
+Empty set (0.01 sec)
+
+mysql> insert into Demo values(1,"sagar","Monu@","Jwadi");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Demo values(1,"Monu","s@","kwadi");
+ERROR 1062 (23000): Duplicate entry '1' for key 'demo.PRIMARY'
+mysql> insert into Demo values("Monu","s@","kwadi");
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into Demo values(0,"Monu","s@","kwadi");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Demo values(3,"Pinku","p@","Pwadi");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> desc Demol
+    -> ;
+
+mysql> desc Demo;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int         | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(20) | YES  |     | NULL    |                |
+| Email | varchar(40) | YES  |     | NULL    |                |
+| addr  | varchar(60) | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> select *from Demo;
++----+-------+-------+-------+
+| id | name  | Email | addr  |
++----+-------+-------+-------+
+|  1 | sagar | Monu@ | Jwadi |
+|  2 | Monu  | s@    | kwadi |
+|  3 | Pinku | p@    | Pwadi |
++----+-------+-------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table Demo add column pincode int;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> update Demo set pincode=32133 where id=1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Demo set pincode=414005 where id=0;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> update Demo set pincode=51899 where id=0;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> desc Demo;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| id      | int         | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(20) | YES  |     | NULL    |                |
+| Email   | varchar(40) | YES  |     | NULL    |                |
+| addr    | varchar(60) | YES  |     | NULL    |                |
+| pincode | int         | YES  |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> select *from Demo;
++----+-------+-------+-------+---------+
+| id | name  | Email | addr  | pincode |
++----+-------+-------+-------+---------+
+|  1 | sagar | Monu@ | Jwadi |   32133 |
+|  2 | Monu  | s@    | kwadi |    NULL |
+|  3 | Pinku | p@    | Pwadi |    NULL |
++----+-------+-------+-------+---------+
+3 rows in set (0.00 sec)
+
+mysql> update Demo set pincode=51899 where id=2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Demo set pincode=51822 where id=3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from Demo;
++----+-------+-------+-------+---------+
+| id | name  | Email | addr  | pincode |
++----+-------+-------+-------+---------+
+|  1 | sagar | Monu@ | Jwadi |   32133 |
+|  2 | Monu  | s@    | kwadi |   51899 |
+|  3 | Pinku | p@    | Pwadi |   51822 |
++----+-------+-------+-------+---------+
+3 rows in set (0.00 sec)
+
+mysql> update Demo set pincode=NULL where id=2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from Demo;
++----+-------+-------+-------+---------+
+| id | name  | Email | addr  | pincode |
++----+-------+-------+-------+---------+
+|  1 | sagar | Monu@ | Jwadi |   32133 |
+|  2 | Monu  | s@    | kwadi |    NULL |
+|  3 | Pinku | p@    | Pwadi |   51822 |
++----+-------+-------+-------+---------+
+3 rows in set (0.00 sec)
+
+
+***delete all records***
+mysql> delete from Demo;
+Query OK, 3 rows affected (0.08 sec)
+
+mysql> select*from Demo;
+
+mysql> drop table Demo;
+Query OK, 0 rows affected (0.10 sec)
+
+***********delete ne entire row delete hoto common field baghychi then apply by using that common field
+
+mysql> delete from Person where Email="M";
+Query OK, 1 row affected (0.01 sec)
+
+📌 In SQL, you CANNOT delete part of a row using DELETE.
+👉 DELETE always removes the whole row.
+
+To remove only one value from a specific column, you must use:
+
+✅ UPDATE + SET column = NULL
+
+*****************Alter All*********************************
+
+mysql> alter table Person drop Pmob;
+Query OK, 0 rows affected (0.17 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select *from Person;
++-----+-------+-------+---------+
+| pId | pname | Email | padd    |
++-----+-------+-------+---------+
+|   1 | sagar | gokul | GM      |
+|   2 | Monya | Pinku | Jalgaon |
+|   3 | Raju  | M@    | Mumbai  |
+|   4 | Mangu | M     | NaviM   |
++-----+-------+-------+---------+
+4 rows in set (0.01 sec)
+
+mysql> alter table Person add column Pmob int;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select *from Person;
++-----+-------+-------+---------+------+
+| pId | pname | Email | padd    | Pmob |
++-----+-------+-------+---------+------+
+|   1 | sagar | gokul | GM      | NULL |
+|   2 | Monya | Pinku | Jalgaon | NULL |
+|   3 | Raju  | M@    | Mumbai  | NULL |
+|   4 | Mangu | M     | NaviM   | NULL |
++-----+-------+-------+---------+------+
+4 rows in set (0.00 sec)
+
+mysql> alter table Person modify column Pmob varchar (90);//increase the new size of Pmob datatype
+mysql> alter table Person rename column Pmob to PmobNum; //rename column
+
+mysql> select *from Person;
++-----+-------+-------+---------+---------+
+| pId | pname | Email | padd    | PmobNum |
++-----+-------+-------+---------+---------+
+|   1 | sagar | gokul | GM      | NULL    |
+|   2 | Monya | Pinku | Jalgaon | NULL    |
+|   3 | Raju  | M@    | Mumbai  | NULL    |
+|   4 | Mangu | M     | NaviM   | NULL    |
++-----+-------+-------+---------+---------+
+4 rows in set (0.00 sec)
+
+TRUNCATE
+
+Deletes all data from table but keeps structure.
+
+TRUNCATE TABLE Demo;
+
+**************After***********
+
+mysql> alter table Person add column age int after Email;
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select *from Person;
++-----+-------+-------+------+---------+---------+
+| pId | pname | Email | age  | padd    | PmobNum |
++-----+-------+-------+------+---------+---------+
+|   1 | sagar | gokul | NULL | GM      | NULL    |
+|   2 | Monya | Pinku | NULL | Jalgaon | NULL    |
+|   3 | Raju  | M@    | NULL | Mumbai  | NULL    |
+|   4 | Mangu | M     | NULL | NaviM   | NULL    |
++-----+-------+-------+------+---------+---------+
+4 rows in set (0.00 sec)
+
+mysql> update Person set age=30;
+Query OK, 4 rows affected (0.02 sec)
+Rows matched: 4  Changed: 4  Warnings: 0
+
+mysql> select *from Person;
++-----+-------+-------+------+---------+---------+
+| pId | pname | Email | age  | padd    | PmobNum |
++-----+-------+-------+------+---------+---------+
+|   1 | sagar | gokul |   30 | GM      | NULL    |
+|   2 | Monya | Pinku |   30 | Jalgaon | NULL    |
+|   3 | Raju  | M@    |   30 | Mumbai  | NULL    |
+|   4 | Mangu | M     |   30 | NaviM   | NULL    |
++-----+-------+-------+------+---------+---------+
+
+mysql> select *from Person where pname in("sagar","Mangu");        //IN works like multiple OR conditions:
++-----+-------+-------+------+-------+----------+--------+
+| pId | pname | Email | age  | padd  | PmobNum  | Salary |
++-----+-------+-------+------+-------+----------+--------+
+|   1 | sagar | gokul |   30 | GM    | 91127428 |  20000 |
+|   4 | Mangu | M     |   30 | NaviM |  9112767 |  50000 |
++-----+-------+-------+------+-------+----------+--------+
+2 rows in set (0.05 sec)
+
+//he 2 sodun
+mysql> select *from Person where pname not in("sagar","Mangu");
++-----+-------+-------+------+---------+----------+--------+
+| pId | pname | Email | age  | padd    | PmobNum  | Salary |
++-----+-------+-------+------+---------+----------+--------+
+|   2 | Monya | Pinku |   30 | Jalgaon | 91127490 |  30000 |
+|   3 | Raju  | M@    |   30 | Mumbai  |  9112343 |  40000 |
++-----+-------+-------+------+---------+----------+--------+
+2 rows in set (0.00 sec)
+//for searching data we use simply Like operator.
+
+mysql> select *from Person where pname like "%ju";
++-----+-------+-------+------+--------+---------+--------+
+| pId | pname | Email | age  | padd   | PmobNum | Salary |
++-----+-------+-------+------+--------+---------+--------+
+|   3 | Raju  | M@    |   30 | Mumbai | 9112343 |  40000 |
++-----+-------+-------+------+--------+---------+--------+
+1 row in set (0.01 sec)
+
+mysql> select *from Person where pname like "%u";
++-----+-------+-------+------+--------+---------+--------+
+| pId | pname | Email | age  | padd   | PmobNum | Salary |
++-----+-------+-------+------+--------+---------+--------+
+|   3 | Raju  | M@    |   30 | Mumbai | 9112343 |  40000 |
+|   4 | Mangu | M     |   30 | NaviM  | 9112767 |  50000 |
++-----+-------+-------+------+--------+---------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select *from Person where pname like "___u";//here we used _ _ _ u
++-----+-------+-------+------+--------+---------+--------+
+| pId | pname | Email | age  | padd   | PmobNum | Salary |
++-----+-------+-------+------+--------+---------+--------+
+|   3 | Raju  | M@    |   30 | Mumbai | 9112343 |  40000 |
++-----+-------+-------+------+--------+---------+--------+
+1 row in set (0.00 sec)
+
+mysql> select *from Person where pname like "R_j_";
++-----+-------+-------+------+--------+---------+--------+
+| pId | pname | Email | age  | padd   | PmobNum | Salary |          +-----+-------+-------+------+--------+---------+--------+
+|   3 | Raju  | M@    |   30 | Mumbai | 9112343 |  40000 |          
++-----+-------+-------+------+--------+---------+--------+
+1 row in set (0.00 sec)
+
+mysql> select *from Person where salary between 40000 and 50000;
++-----+-------+-------+------+--------+---------+--------+
+| pId | pname | Email | age  | padd   | PmobNum | Salary |
++-----+-------+-------+------+--------+---------+--------+
+|   3 | Raju  | M@    |   30 | Mumbai | 9112343 |  40000 |
+|   4 | Mangu | M     |   30 | NaviM  | 9112767 |  50000 |
++-----+-------+-------+------+--------+---------+--------+
+
+
+//If i want to Improve the salary by 500 then :
+mysql> select pId,pname,Email,salary+500 as Total_Sal from Person where pId>3;
++-----+-------+-------+-----------+
+| pId | pname | Email | Total_Sal |
++-----+-------+-------+-----------+
+|   4 | Mangu | M     |     50500 |
++-----+-------+-------+-----------+
+1 row in set (0.01 sec)
+
+//if i want to minus salary 5000 whose age is 30. 
+mysql> select pname,pId,salary-5000 as total_Sal from Person where age=30;
++-------+-----+-----------+
+| pname | pId | total_Sal |
++-------+-----+-----------+
+| sagar |   1 |     15000 |
+| Monya |   2 |     25000 |
+| Raju  |   3 |     35000 |
+| Mangu |   4 |     45000 |
++-------+-----+-----------+
+
+
+**************view********************
+view is a virtual table based on the result-set of an SQL statement.
+A view contains rows and columns just like a real table the fields in view are one or more real tables in the database.
+
+view is created with the create view Statement.
+
+
+
+mysql> update Person set salary=500 where pId=1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Person set Salary=1000 where pId=2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Person set Salary=2000 where pId=3;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Person set Salary=2500 where pId=4;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from Person;
++-----+-------+-------+------+---------+----------+--------+
+| pId | pname | Email | age  | padd    | PmobNum  | Salary |
++-----+-------+-------+------+---------+----------+--------+
+|   1 | sagar | gokul |   30 | GM      | 91127428 |    500 |
+|   2 | Monya | Pinku |   30 | Jalgaon | 91127490 |   1000 |
+|   3 | Raju  | M@    |   30 | Mumbai  |  9112343 |   2000 |
+|   4 | Mangu | M     |   30 | NaviM   |  9112767 |   2500 |
++-----+-------+-------+------+---------+----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> alter table Person drop age;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table Person add column age int after Email;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select *from Person;
++-----+-------+-------+------+---------+----------+--------+
+| pId | pname | Email | age  | padd    | PmobNum  | Salary |
++-----+-------+-------+------+---------+----------+--------+
+|   1 | sagar | gokul | NULL | GM      | 91127428 |    500 |
+|   2 | Monya | Pinku | NULL | Jalgaon | 91127490 |   1000 |
+|   3 | Raju  | M@    | NULL | Mumbai  |  9112343 |   2000 |
+|   4 | Mangu | M     | NULL | NaviM   |  9112767 |   2500 |
++-----+-------+-------+------+---------+----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> alter table Person drop column age;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+
+Check constraints :
+mainly used for to define the condition like age should always be less than 18 then only its allow...
+mysql> alter table Person add column age int check(age<18) after Email;
+Query OK, 4 rows affected (0.14 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select *from Person;
++-----+-------+-------+------+---------+----------+--------+
+| pId | pname | Email | age  | padd    | PmobNum  | Salary |
++-----+-------+-------+------+---------+----------+--------+
+|   1 | sagar | gokul | NULL | GM      | 91127428 |    500 |
+|   2 | Monya | Pinku | NULL | Jalgaon | 91127490 |   1000 |
+|   3 | Raju  | M@    | NULL | Mumbai  |  9112343 |   2000 |
+|   4 | Mangu | M     | NULL | NaviM   |  9112767 |   2500 |
++-----+-------+-------+------+---------+----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> update Person set age=90 where id=1;
+ERROR 1054 (42S22): Unknown column 'id' in 'where clause'
+mysql> update Person set age=90 where pId=1;
+ERROR 3819 (HY000): Check constraint 'person_chk_1' is violated.
+mysql> update Person set age=10 where pId=1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from Person;
++-----+-------+-------+------+---------+----------+--------+
+| pId | pname | Email | age  | padd    | PmobNum  | Salary |
++-----+-------+-------+------+---------+----------+--------+
+|   1 | sagar | gokul |   10 | GM      | 91127428 |    500 |
+|   2 | Monya | Pinku | NULL | Jalgaon | 91127490 |   1000 |
+|   3 | Raju  | M@    | NULL | Mumbai  |  9112343 |   2000 |
+|   4 | Mangu | M     | NULL | NaviM   |  9112767 |   2500 |
++-----+-------+-------+------+---------+----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> update Person set age=14 where pId=3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from Person;
++-----+-------+-------+------+---------+----------+--------+
+| pId | pname | Email | age  | padd    | PmobNum  | Salary |
++-----+-------+-------+------+---------+----------+--------+
+|   1 | sagar | gokul |   10 | GM      | 91127428 |    500 |
+|   2 | Monya | Pinku |   13 | Jalgaon | 91127490 |   1000 |
+|   3 | Raju  | M@    |   14 | Mumbai  |  9112343 |   2000 |
+|   4 | Mangu | M     | NULL | NaviM   |  9112767 |   2500 |
++-----+-------+-------+------+---------+----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select *from Person where pId between 2 and 4;
++-----+-------+-------+------+---------+----------+--------+
+| pId | pname | Email | age  | padd    | PmobNum  | Salary |
++-----+-------+-------+------+---------+----------+--------+
+|   2 | Monya | Pinku |   13 | Jalgaon | 91127490 |   1000 |
+|   3 | Raju  | M@    |   14 | Mumbai  |  9112343 |   2000 |
+|   4 | Mangu | M     | NULL | NaviM   |  9112767 |   2500 |
++-----+-------+-------+------+---------+----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select *from Person order by pId desc limit 1;
++-----+-------+-------+------+-------+---------+--------+
+| pId | pname | Email | age  | padd  | PmobNum | Salary |
++-----+-------+-------+------+-------+---------+--------+
+|   4 | Mangu | M     | NULL | NaviM | 9112767 |   2500 |
++-----+-------+-------+------+-------+---------+--------+
+1 row in set (0.00 sec)
+
+
+//start auto increment from 10 after this row..
+
+ 
+mysql> alter table Person auto_Increment=10;
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select *from Person;
++-----+-------+-------+------+---------+----------+--------+
+| pId | pname | Email | age  | padd    | PmobNum  | Salary |
++-----+-------+-------+------+---------+----------+--------+
+|   1 | sagar | gokul |   10 | GM      | 91127428 |    500 |
+|   2 | Monya | Pinku |   13 | Jalgaon | 91127490 |   1000 |
+|   3 | Raju  | M@    |   14 | Mumbai  |  9112343 |   2000 |
+|   4 | Mangu | M     | NULL | NaviM   |  9112767 |   2500 |
++-----+-------+-------+------+---------+----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> insert into Person values(0,"Raju","R@",13,"pune",90123,3000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from Person;
++-----+-------+-------+------+---------+----------+--------+
+| pId | pname | Email | age  | padd    | PmobNum  | Salary |
++-----+-------+-------+------+---------+----------+--------+
+|   1 | sagar | gokul |   10 | GM      | 91127428 |    500 |
+|   2 | Monya | Pinku |   13 | Jalgaon | 91127490 |   1000 |
+|   3 | Raju  | M@    |   14 | Mumbai  |  9112343 |   2000 |
+|   4 | Mangu | M     | NULL | NaviM   |  9112767 |   2500 |
+|  10 | Raju  | R@    |   13 | pune    |    90123 |   3000 |
++-----+-------+-------+------+---------+----------+--------+
+5 rows in set (0.00 sec)
+
+//Rename column:
+mysql> alter table Person rename column Salary to pSalary;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select *from Person;
++-----+-------+-------+------+---------+----------+---------+
+| pId | pname | Email | age  | padd    | PmobNum  | pSalary |
++-----+-------+-------+------+---------+----------+---------+
+|   1 | sagar | gokul |   10 | GM      | 91127428 |     500 |
+|   2 | Monya | Pinku |   13 | Jalgaon | 91127490 |    1000 |
+|   3 | Raju  | M@    |   14 | Mumbai  |  9112343 |    2000 |
+|   4 | Mangu | M     | NULL | NaviM   |  9112767 |    2500 |
+|  10 | Raju  | R@    |   13 | pune    |    90123 |    3000 |
++-----+-------+-------+------+---------+----------+---------+
+5 rows in set (0.00 sec)
+
+
