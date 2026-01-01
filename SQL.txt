@@ -663,3 +663,149 @@ mysql> select *from Person;
 5 rows in set (0.00 sec)
 
 
+//primary Key
+in one table cotains only one primary key but we can write unique more than one.to avoid duplicate Data.
+
+If i want to maintain the relationship between the relationship between the two table then i Have one common Field in both the table.
+
+
+//
+mysql> select *from Person;
++-----+---------+--------+--------+
+| pId | pname   | padd   | pEmail |
++-----+---------+--------+--------+
+|   1 | Mangu   | Pune   | M@     |
+|   2 | Raju    | Mumbai | R@     |
+|   3 | Krushna | Thane  | p@     |
++-----+---------+--------+--------+
+3 rows in set (0.00 sec)
+
+mysql> create table Porder(oId int auto_increment primary key,onum varchar(30) unique,pId int, Foreign key (pId) references Person(pId));
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> desc Porder;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| oId   | int         | NO   | PRI | NULL    | auto_increment |
+| onum  | varchar(30) | YES  | UNI | NULL    |                |
+| pId   | int         | YES  | MUL | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+3 rows in set (0.01 sec)
+
+mysql> insert into Porder values(0,"10",1);
+Query OK, 1 row affected (0.01 sec)
+
+
+mysql> select *from Porder;
++-----+------+------+
+| oId | onum | pId  |
++-----+------+------+
+|   1 | 10   |    1 |
+|   2 | 12   |    2 |
+|   4 | R12  |    2 |
+|   5 | S12  |    2 |
+|   6 | p13  |    3 |
++-----+------+------+
+5 rows in set (0.00 sec)
+
+mysql> select p.pId,p.pname,o.onum from Person p,Porder o where p.pId=o.pId;
++-----+---------+------+
+| pId | pname   | onum |
++-----+---------+------+
+|   1 | Mangu   | 10   |
+|   2 | Raju    | 12   |
+|   2 | Raju    | R12  |
+|   2 | Raju    | S12  |
+|   3 | Krushna | p13  |
++-----+---------+------+
+5 rows in set (0.00 sec)
+
+mysql> insert into Person values(4,"Pinku","Warje","j@");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select p.pname,p.pId,o.onum from Person p,pOrder o where p.pId=o.pId;
++---------+-----+------+
+| pname   | pId | onum |
++---------+-----+------+
+| Mangu   |   1 | 10   |
+| Raju    |   2 | 12   |
+| Raju    |   2 | R12  |
+| Raju    |   2 | S12  |
+| Krushna |   3 | p13  |
++---------+-----+------+
+5 rows in set (0.00 sec)
+
+mysql> select p.pname,p.pId,o.onum from Person p,pOrder o where p.pId=o.pId and p.pId=2;
++-------+-----+------+
+| pname | pId | onum |
++-------+-----+------+
+| Raju  |   2 | 12   |
+| Raju  |   2 | R12  |
+| Raju  |   2 | S12  |
++-------+-----+------+
+3 rows in set (0.00 sec)
+
+//Cross Join :used for to find the combnaton of two tables .
+
+
+if i have two table students and subjects by using this i want to generate the Exam registration List.. so i need to find the combination like student subject Mapping .
+
+mysql> select *from students;
++-------+------+
+| name  | id   |
++-------+------+
+| Rahul |    1 |
+| Sneha |    2 |
++-------+------+
+2 rows in set (0.00 sec)
+
+mysql> select *from subjects;
++---------+------+
+| subject | sid  |
++---------+------+
+| java    |    1 |
+| SQl     |    2 |
+| Python  |    3 |
++---------+------+
+3 rows in set (0.00 sec)
+
+
+mysql> select *from Students cross join Subjects;
++-------+------+---------+------+
+| name  | id   | subject | sid  |
++-------+------+---------+------+
+| Sneha |    2 | java    |    1 |
+| Rahul |    1 | java    |    1 |
+| Sneha |    2 | SQl     |    2 |
+| Rahul |    1 | SQl     |    2 |
+| Sneha |    2 | Python  |    3 |
+| Rahul |    1 | Python  |    3 |
++-------+------+---------+------+
+6 rows in set (0.00 sec)
+
+mysql> select *from Students cross join Subjects order by id;
++-------+------+---------+------+
+| name  | id   | subject | sid  |
++-------+------+---------+------+
+| Rahul |    1 | java    |    1 |
+| Rahul |    1 | SQl     |    2 |
+| Rahul |    1 | Python  |    3 |
+| Sneha |    2 | java    |    1 |
+| Sneha |    2 | SQl     |    2 |
+| Sneha |    2 | Python  |    3 |
++-------+------+---------+------+
+6 rows in set (0.01 sec)
+
+mysql> select *from Students cross join Subjects order by sid;
++-------+------+---------+------+
+| name  | id   | subject | sid  |
++-------+------+---------+------+
+| Sneha |    2 | java    |    1 |
+| Rahul |    1 | java    |    1 |
+| Sneha |    2 | SQl     |    2 |
+| Rahul |    1 | SQl     |    2 |
+| Sneha |    2 | Python  |    3 |
+| Rahul |    1 | Python  |    3 |
++-------+------+---------+------+
+6 rows in set (0.00 sec)
