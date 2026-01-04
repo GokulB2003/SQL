@@ -482,11 +482,6 @@ mysql> select pname,pId,salary-5000 as total_Sal from Person where age=30;
 +-------+-----+-----------+
 
 
-**************view********************
-view is a virtual table based on the result-set of an SQL statement.
-A view contains rows and columns just like a real table the fields in view are one or more real tables in the database.
-
-view is created with the create view Statement.
 
 
 
@@ -809,3 +804,364 @@ mysql> select *from Students cross join Subjects order by sid;
 | Rahul |    1 | Python  |    3 |
 +-------+------+---------+------+
 6 rows in set (0.00 sec)
+
+
+**************************************************************view********************
+view is a virtual table based on the result-set of an SQL statement.
+A view contains rows and columns just like a real table the fields in view are one or more real tables in the database.
+
+view is created with the create view Statement.
+CREATE VIEW view_name AS
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+
+Create User and Give the Permission we use two command Grant and revoke usd in DCL.
+
+Grant —------->to allow Permission
+Revoke —---------->to remove pwermission.
+
+GRANT privilege_name
+ON table_name
+TO user_name;
+
+
+GRANT SELECT, INSERT
+ON Employee
+TO gokul;
+
+GRANT ALL
+ON Employee
+TO gokul;
+
+GRANT is used to give permissions to users on database objects.
+Permissions like:
+SELECT
+
+
+INSERT
+
+
+UPDATE
+
+
+DELETE
+
+
+ALL
+
+
+
+
+C:\Users\Hp>mysql -u root -p
+Enter password: **********
+
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| abc                |
+| college            |
+| information_schema |
+| mydb               |
+| mysql              |
+| performance_schema |
+| pp                 |
+| pp50               |
+| sys                |
+| temp               |
++--------------------+
+10 rows in set (0.02 sec)
+
+mysql> use pp50;
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_pp50  |
++-----------------+
+| custo           |
+| customer        |
+| employee        |
+| p_order         |
+| person          |
+| person_ord_view |
+| porder          |
+| salesman        |
+| store           |
+| student         |
++-----------------+
+10 rows in set (0.01 sec)
+
+mysql> select *from person;
++-----+---------+--------+--------+
+| pId | pname   | padd   | pEmail |
++-----+---------+--------+--------+
+|   1 | Mangu   | Pune   | M@     |
+|   2 | Raju    | Mumbai | R@     |
+|   3 | Krushna | Thane  | p@     |
+|   4 | Pinku   | Warje  | j@     |
+|  10 | vishal  | Shirur | @v     |
+|  11 | Ram     | Pune   | @R     |
++-----+---------+--------+--------+
+6 rows in set (0.01 sec)
+
+mysql> select *from p_order;
++-----+--------+
+| pId | o_num  |
++-----+--------+
+|  10 | Rxpx12 |
+|  11 | RxpxxQ |
++-----+--------+
+2 rows in set (0.00 sec)
+
+mysql> desc person;
++--------+-------------+------+-----+---------+----------------+
+| Field  | Type        | Null | Key | Default | Extra          |
++--------+-------------+------+-----+---------+----------------+
+| pId    | int         | NO   | PRI | NULL    | auto_increment |
+| pname  | varchar(40) | YES  |     | NULL    |                |
+| padd   | varchar(40) | YES  |     | NULL    |                |
+| pEmail | varchar(40) | YES  | UNI | NULL    |                |
++--------+-------------+------+-----+---------+----------------+
+4 rows in set (0.01 sec)
+
+
+
+
+mysql> create view person_vieww as select pId,pEmail,pname from person;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select *fromperson_vieww
+    -> ;
+mysql> select *from person_vieww;
++-----+--------+---------+
+| pId | pEmail | pname   |
++-----+--------+---------+
+|   1 | M@     | Mangu   |
+|   2 | R@     | Raju    |
+|   3 | p@     | Krushna |
+|   4 | j@     | Pinku   |
+|  10 | @v     | vishal  |
+|  11 | @R     | Ram     |
++-----+--------+---------+
+6 rows in set (0.00 sec)
+
+mysql> insert into person_vieww values (14,"g@0","Raju");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into person_vieww values (15,"f@0","kaju");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from person_vieww;
++-----+--------+---------+
+| pId | pEmail | pname   |
++-----+--------+---------+
+|   1 | M@     | Mangu   |
+|   2 | R@     | Raju    |
+|   3 | p@     | Krushna |
+|   4 | j@     | Pinku   |
+|  10 | @v     | vishal  |
+|  11 | @R     | Ram     |
+|  14 | g@0    | Raju    |
+|  15 | f@0    | kaju    |
++-----+--------+---------+
+8 rows in set (0.00 sec)
+
+mysql> select *from person;
++-----+---------+--------+--------+
+| pId | pname   | padd   | pEmail |
++-----+---------+--------+--------+
+|   1 | Mangu   | Pune   | M@     |
+|   2 | Raju    | Mumbai | R@     |
+|   3 | Krushna | Thane  | p@     |
+|   4 | Pinku   | Warje  | j@     |
+|  10 | vishal  | Shirur | @v     |
+|  11 | Ram     | Pune   | @R     |
+|  14 | Raju    | NULL   | g@0    |
+|  15 | kaju    | NULL   | f@0    |
++-----+---------+--------+--------+
+8 rows in set (0.00 sec)
+
+Use of Grant
+I have given the permission only for insert and select.
+Create username and password:
+
+mysql> create user 'gokul'@'localhost' identified by 'admin123';
+Query OK, 0 rows affected (0.08 sec)
+
+To view all username:
+mysql> select user from mysql.user;
++------------------+
+| user             |
++------------------+
+| gokul            |
+| mysql.infoschema |
+| mysql.session    |
+| mysql.sys        |
+| root             |
++------------------+
+5 rows in set (0.00 sec)
+
+mysql> grant select on pp50.person_vieww to 'gokul'@'localhost';
+Query OK, 0 rows affected (0.03 sec)
+
+To view all permissions
+mysql> show grants for 'gokul'@'localhost';
++--------------------------------------------------------------+
+| Grants for gokul@localhost                                   |
++--------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `gokul`@`localhost`                    |
+| GRANT SELECT ON `pp50`.`person_vieww` TO `gokul`@`localhost` |
++--------------------------------------------------------------+
+2 rows in set (0.00 sec)
+mysql> show grants for 'gokul'@'localhost';
++--------------------------------------------------------------+
+| Grants for gokul@localhost                                   |
++--------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `gokul`@`localhost`                    |
+| GRANT SELECT ON `pp50`.`person_vieww` TO `gokul`@`localhost` |
++--------------------------------------------------------------+
+2 rows in set (0.00 sec)
+Provide more permission to view table:
+mysql> grant select,insert,update,delete on pp50.person_vieww to 'gokul'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show grants for 'gokul'@'localhost';
++--------------------------------------------------------------------------------------+
+| Grants for gokul@localhost                                                           |
++--------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `gokul`@`localhost`                                            |
+| GRANT SELECT, INSERT, UPDATE, DELETE ON `pp50`.`person_vieww` TO `gokul`@`localhost` |
++--------------------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> select *from person__vieww;
+ERROR 1146 (42S02): Table 'pp50.person__vieww' doesn't exist
+mysql> select *from person_vieww;
++-----+--------+---------+
+| pId | pEmail | pname   |
++-----+--------+---------+
+|   1 | M@     | Mangu   |
+|   2 | R@     | Raju    |
+|   3 | p@     | Krushna |
+|   4 | j@     | Pinku   |
+|  10 | @v     | vishal  |
+|  11 | @R     | Ram     |
+|  14 | g@0    | Raju    |
+|  15 | f@0    | kaju    |
+|  16 | GB     | M       |
+|  20 | JA     | Jay     |
++-----+--------+---------+
+10 rows in set (0.00 sec)
+
+mysql> select *from person;
++-----+---------+--------+--------+
+| pId | pname   | padd   | pEmail |
++-----+---------+--------+--------+
+|   1 | Mangu   | Pune   | M@     |
+|   2 | Raju    | Mumbai | R@     |
+|   3 | Krushna | Thane  | p@     |
+|   4 | Pinku   | Warje  | j@     |
+|  10 | vishal  | Shirur | @v     |
+|  11 | Ram     | Pune   | @R     |
+|  14 | Raju    | NULL   | g@0    |
+|  15 | kaju    | NULL   | f@0    |
+|  16 | M       | NULL   | GB     |
+|  20 | Jay     | NULL   | JA     |
++-----+---------+--------+--------+
+10 rows in set (0.00 sec)
+
+Remove permission for view
+mysql> revoke insert on pp50.person_vieww from 'gokul'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+Delete view
+mysql> drop view person_vieww;
+Query OK, 0 rows affected (0.03 sec)
+
+Open another terminal and type this command to show view ..we have given the permission of only one table i.e inside database of pp50 i have given the permission of new created table  gokul for select.
+
+
+
+C:\Users\Hp>mysql -u gokul -p
+Enter password: ********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.44 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| performance_schema |
+| pp50               |
++--------------------+
+3 rows in set (0.04 sec)
+
+mysql> use pp50;
+Database changed
+mysql> show tables;
++----------------+
+| Tables_in_pp50 |
++----------------+
+| person_vieww   |
++----------------+
+1 row in set (0.03 sec)
+
+mysql> select *from person_vieww;
++-----+--------+---------+
+| pId | pEmail | pname   |
++-----+--------+---------+
+|   1 | M@     | Mangu   |
+|   2 | R@     | Raju    |
+|   3 | p@     | Krushna |
+|   4 | j@     | Pinku   |
+|  10 | @v     | vishal  |
+|  11 | @R     | Ram     |
+|  14 | g@0    | Raju    |
+|  15 | f@0    | kaju    |
+|  20 | JA     | Jay     |
++-----+--------+---------+
+9 rows in set (0.00 sec)
+
+No permission:
+mysql> insert into person_vieww
+    -> values(16,"M#","patil");
+ERROR 1142 (42000): INSERT command denied to user 'gokul'@'localhost' for table 'person_vieww'
+
+
+insert into person_vieww values(16,"GB",)
+
+insert into person_vieww values(16' at line 1
+mysql> insert into person_vieww values(16,"GB","M");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from person_vieww;
++-----+--------+---------+
+| pId | pEmail | pname   |
++-----+--------+---------+
+|   1 | M@     | Mangu   |
+|   2 | R@     | Raju    |
+|   3 | p@     | Krushna |
+|   4 | j@     | Pinku   |
+|  10 | @v     | vishal  |
+|  11 | @R     | Ram     |
+|  14 | g@0    | Raju    |
+|  15 | f@0    | kaju    |
+|  16 | GB     | M       |
+|  20 | JA     | Jay     |
++-----+--------+---------+
+10 rows in set (0.00 sec)
+
+
+
