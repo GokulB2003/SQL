@@ -1165,4 +1165,14 @@ mysql> select *from person_vieww;
 
 ///
 ///
-
+if we want to used the i else codition then
+CASE
+    WHEN employee_id % 2 = 0 THEN 'EVEN'
+    ELSE 'ODD'
+END AS type
+//OR
+case 
+	when empoyee_id%2==0 then 'Even'
+	else
+	'odd'
+End
