@@ -1176,3 +1176,24 @@ case
 	else
 	'odd'
 End
+
+/**SubQuery**/
+subquery means query within Query or nested Query called as a Subquery.
+subquery can return indivisual values or list of records.
+note:subQuery sa=tatements are enclosed between the parenthesis.
+
+Syntax:
+there is no general syntax of SubQuryregularly Queries placed inside the parenthesis.
+subquery can be used an a different ways and different location inside the Query.
+
+select columnname from table1 where column operator(select column name from table2 where condition);
+
+we have no. of operator to work with subquery we have the number of operator:
+in
+Exists
+all
+Not Exist
+etc.
+
+
+ 
