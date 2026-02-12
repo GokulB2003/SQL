@@ -1,0 +1,174 @@
+
+mysql> create database j2025
+    -> ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use j2025
+Database changed
+mysql> create table employee(id int(9),name varchar(20),salary int(4));
+Query OK, 0 rows affected, 2 warnings (0.05 sec)
+
+mysql> desc employee;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | YES  |     | NULL    |       |
+| name   | varchar(20) | YES  |     | NULL    |       |
+| salary | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.02 sec)
+
+mysql> describe employee;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | YES  |     | NULL    |       |
+| name   | varchar(20) | YES  |     | NULL    |       |
+| salary | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> alter table employee add column contact int(10) after salary;
+Query OK, 0 rows affected, 1 warning (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> desc employee;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| id      | int         | YES  |     | NULL    |       |
+| name    | varchar(20) | YES  |     | NULL    |       |
+| salary  | int         | YES  |     | NULL    |       |
+| contact | int         | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table employee add(email varchar(40),address varchar(30));
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| id      | int         | YES  |     | NULL    |       |
+| name    | varchar(20) | YES  |     | NULL    |       |
+| salary  | int         | YES  |     | NULL    |       |
+| contact | int         | YES  |     | NULL    |       |
+| email   | varchar(40) | YES  |     | NULL    |       |
+| address | varchar(30) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table employee modify column salary varchar(40);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| id      | int         | YES  |     | NULL    |       |
+| name    | varchar(20) | YES  |     | NULL    |       |
+| salary  | varchar(40) | YES  |     | NULL    |       |
+| contact | int         | YES  |     | NULL    |       |
+| email   | varchar(40) | YES  |     | NULL    |       |
+| address | varchar(30) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table employee modify column salary int(10);
+Query OK, 0 rows affected, 1 warning (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> desc employee;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| id      | int         | YES  |     | NULL    |       |
+| name    | varchar(20) | YES  |     | NULL    |       |
+| salary  | int         | YES  |     | NULL    |       |
+| contact | int         | YES  |     | NULL    |       |
+| email   | varchar(40) | YES  |     | NULL    |       |
+| address | varchar(30) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table employee drop address;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| id      | int         | YES  |     | NULL    |       |
+| name    | varchar(20) | YES  |     | NULL    |       |
+| salary  | int         | YES  |     | NULL    |       |
+| contact | int         | YES  |     | NULL    |       |
+| email   | varchar(40) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table employee rename column email to address;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> email
+    -> ;
+
+mysql> desc employee;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| id      | int         | YES  |     | NULL    |       |
+| name    | varchar(20) | YES  |     | NULL    |       |
+| salary  | int         | YES  |     | NULL    |       |
+| contact | int         | YES  |     | NULL    |       |
+| address | varchar(40) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> truncate employee;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc employee;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| id      | int         | YES  |     | NULL    |       |
+| name    | varchar(20) | YES  |     | NULL    |       |
+| salary  | int         | YES  |     | NULL    |       |
+| contact | int         | YES  |     | NULL    |       |
+| address | varchar(40) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> insert into employee values(10,"saagr",2000,928477,"warje");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from employee;
++------+-------+--------+---------+---------+
+| id   | name  | salary | contact | address |
++------+-------+--------+---------+---------+
+|   10 | saagr |   2000 |  928477 | warje   |
++------+-------+--------+---------+---------+
+1 row in set (0.00 sec)
+
+mysql> insert into employee (id,name) values(11,"mangu");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from employee;
++------+-------+--------+---------+---------+
+| id   | name  | salary | contact | address |
++------+-------+--------+---------+---------+
+|   10 | saagr |   2000 |  928477 | warje   |
+|   11 | mangu |   NULL |    NULL | NULL    |
++------+-------+--------+---------+---------+
+2 rows in set (0.00 sec)
+
+mysql> truncate employee;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select*from employee;
+Empty set (0.00 sec)
