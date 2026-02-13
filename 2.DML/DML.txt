@@ -1,0 +1,96 @@
+mysql> delete from employee where id=1;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select *from employee;
+Empty set (0.00 sec)
+
+mysql> delete from employee;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select *from employee;
+Empty set (0.00 sec)
+
+mysql> drop table employee;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table employee(name varchar(30),id int);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc employee;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| name  | varchar(30) | YES  |     | NULL    |       |
+| id    | int         | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+mysql> alter table employee add column salary int;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mmysql> insert into employee values("sagar",1,2000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from employee;
++-------+------+--------+
+| name  | id   | salary |
++-------+------+--------+
+| sagar |    1 |   2000 |
++-------+------+--------+
+1 row in set (0.00 sec)
+
+
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from employee;
++-------+------+--------+
+| name  | id   | salary |
++-------+------+--------+
+| sagar |    1 |  20000 |
++-------+------+--------+
+1 row in set (0.01 sec)
+
+mysql> insert into employee values("mayur",2,4999);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values("sonu",3,4555);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from employee;
++-------+------+--------+
+| name  | id   | salary |
++-------+------+--------+
+| sagar |    1 |  20000 |
+| mayur |    2 |   4999 |
+| sonu  |    3 |   4555 |
++-------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql> update employee set salary=3999;
+Query OK, 3 rows affected (0.01 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> select *from employee;
++-------+------+--------+
+| name  | id   | salary |
++-------+------+--------+
+| sagar |    1 |   3999 |
+| mayur |    2 |   3999 |
+| sonu  |    3 |   3999 |
++-------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql> update employee set salary=2000 where id=1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from employee;
++-------+------+--------+
+| name  | id   | salary |
++-------+------+--------+
+| sagar |    1 |   2000 |
+| mayur |    2 |   3999 |
+| sonu  |    3 |   3999 |
++-------+------+--------+
