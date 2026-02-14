@@ -133,27 +133,3 @@ GROUP BY department
 HAVING AVG(salary) > 45000;
 ```
 
----
-
-# 📝 Important Notes
-
-* Aggregate functions ignore `NULL` values (except `COUNT(*)`).
-* They are often used with `GROUP BY`.
-* `WHERE` filters rows before grouping.
-* `HAVING` filters groups after aggregation.
-
----
-
-# ✅ Conclusion
-
-SQL Aggregate Functions are essential for data analysis, reporting, and summarizing data efficiently.
-
----
-
-If you want, I can also provide:
-
-* 📘 MySQL-specific version
-* 📙 PostgreSQL version
-* 📗 Interview-focused notes
-* 📊 Practice problems with solutions
-
