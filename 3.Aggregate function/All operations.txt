@@ -1,0 +1,539 @@
+--SQL All operations,Operators, and Operations
+mysql> create table Employee(emp_id int primary key ,emp_name varchar(50) not null,department varchar(50),Salary Decimal(10,2),join_date date);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc Employee;
++------------+---------------+------+-----+---------+-------+
+| Field      | Type          | Null | Key | Default | Extra |
++------------+---------------+------+-----+---------+-------+
+| emp_id     | int           | NO   | PRI | NULL    |       |
+| emp_name   | varchar(50)   | NO   |     | NULL    |       |
+| department | varchar(50)   | YES  |     | NULL    |       |
+| Salary     | decimal(10,2) | YES  |     | NULL    |       |
+| join_date  | date          | YES  |     | NULL    |       |
++------------+---------------+------+-----+---------+-------+
+5 rows in set (0.02 sec)
+
+mysql> insert into Employee values(6,"Rohan","IT",30000,'2024-02-01');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select *from Employee;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | Salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      6 | Rohan    | IT         | 30000.00 | 2024-02-01 |
++--------+----------+------------+----------+------------+
+1 row in set (0.00 sec)
+
+mysql> insert into Employee values(7,"Sneha","HR",26000,'2023-11-10');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Employee values(8,"Vikram","Finanace",38000,'2022-08-18');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select *from Employee;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | Salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      6 | Rohan    | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 26000.00 | 2023-11-10 |
+|      8 | Vikram   | Finanace   | 38000.00 | 2022-08-18 |
++--------+----------+------------+----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into Employee values(9,"Anjali","Marketing",42000,'2026-02-18');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Employee values(10,"Pratiksha","Marketing",52000,'2026-02-15');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into EMployee values(11,"Rahul","IT",35000,'2023-06-25');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select *from Employee;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      6 | Rohan     | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha     | HR         | 26000.00 | 2023-11-10 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 35000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select emp_name,salary from Employee;
++-----------+----------+
+| emp_name  | salary   |
++-----------+----------+
+| Rohan     | 30000.00 |
+| Sneha     | 26000.00 |
+| Vikram    | 38000.00 |
+| Anjali    | 42000.00 |
+| Pratiksha | 52000.00 |
+| Rahul     | 35000.00 |
++-----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select emp_name from Employee where department="IT";
++----------+
+| emp_name |
++----------+
+| Rohan    |
+| Rahul    |
++----------+
+2 rows in set (0.00 sec)
+
+mysql> select *from Employee where salary>30000;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 35000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select *from Employee where join_date>'2022-01-01';
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      6 | Rohan     | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha     | HR         | 26000.00 | 2023-11-10 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 35000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select distinct(department) from Employee;
++------------+
+| department |
++------------+
+| IT         |
+| HR         |
+| Finanace   |
+| Marketing  |
++------------+
+4 rows in set (0.00 sec)
+
+mysql> select *from Employee where salary between 25000 and 40000;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | Salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      6 | Rohan    | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 26000.00 | 2023-11-10 |
+|      8 | Vikram   | Finanace   | 38000.00 | 2022-08-18 |
+|     11 | Rahul    | IT         | 35000.00 | 2023-06-25 |
++--------+----------+------------+----------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select *from Employee where salary between 26000.00 and 40000;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | Salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      6 | Rohan    | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 26000.00 | 2023-11-10 |
+|      8 | Vikram   | Finanace   | 38000.00 | 2022-08-18 |
+|     11 | Rahul    | IT         | 35000.00 | 2023-06-25 |
++--------+----------+------------+----------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select emp_id,emp_name from Employee where not salry=35000;
+ERROR 1054 (42S22): Unknown column 'salry' in 'where clause'
+mysql> select emp_id,emp_name from Employee where not salary=35000;
++--------+-----------+
+| emp_id | emp_name  |
++--------+-----------+
+|      6 | Rohan     |
+|      7 | Sneha     |
+|      8 | Vikram    |
+|      9 | Anjali    |
+|     10 | Pratiksha |
++--------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select *from Employee where not salary=35000;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      6 | Rohan     | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha     | HR         | 26000.00 | 2023-11-10 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
++--------+-----------+------------+----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select *from Employee where depeartment in('HR','IT');
+ERROR 1054 (42S22): Unknown column 'depeartment' in 'where clause'
+mysql> select *from Employee where department in('HR','IT');
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | Salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      6 | Rohan    | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 26000.00 | 2023-11-10 |
+|     11 | Rahul    | IT         | 35000.00 | 2023-06-25 |
++--------+----------+------------+----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select *from Employee where emp_name like "p%";
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
++--------+-----------+------------+----------+------------+
+1 row in set (0.00 sec)
+
+mysql> select *from Employee where salary>=30000 and department="IT";
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | Salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      6 | Rohan    | IT         | 30000.00 | 2024-02-01 |
+|     11 | Rahul    | IT         | 35000.00 | 2023-06-25 |
++--------+----------+------------+----------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select emp_id,emp_name from Employee where salary<=30000 or department='Finanace';
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      6 | Rohan    |
+|      7 | Sneha    |
+|      8 | Vikram   |
++--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select *from Employee where emp_name like "%a%";
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      6 | Rohan     | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha     | HR         | 26000.00 | 2023-11-10 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 35000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select *from Employee where Salary+2000;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      6 | Rohan     | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha     | HR         | 26000.00 | 2023-11-10 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 35000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> update Employee set Salary=salary+2000 where department="IT";
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select *from Employee;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      7 | Sneha     | HR         | 26000.00 | 2023-11-10 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 37000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> update Employee set emp_id=3 where department="HR";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from Employee;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      3 | Sneha     | HR         | 26000.00 | 2023-11-10 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 37000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> update Employee set Salary=30000 where emp_name="Amit";
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> update Employee set join_date='2024-01-01' where emp_id=5;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> select *from Employee;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      3 | Sneha     | HR         | 26000.00 | 2023-11-10 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 37000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select *from Employee order by emp_id;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      3 | Sneha     | HR         | 26000.00 | 2023-11-10 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 37000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> update Employee set salary=salary*10/100 where department="HR";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from Employe;
+ERROR 1146 (42S02): Table 'billing.employe' doesn't exist
+mysql> select *from Employee;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      3 | Sneha     | HR         |  2600.00 | 2023-11-10 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 37000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> update Employee set salary=salary+(3000*10/100) where department="HR";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from Employee;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      3 | Sneha     | HR         |  2900.00 | 2023-11-10 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 37000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> update Employee set salary=3000+(3000*10/100) where department="HR";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from Employee;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      3 | Sneha     | HR         |  3300.00 | 2023-11-10 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 37000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> update Employee set join_date='2024-01-01' where emp_id=5;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> select *from Employee;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      3 | Sneha     | HR         |  3300.00 | 2023-11-10 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 37000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> insert into Employee values(2,"Tanvi","Computer",50000.00,'2023-09-21');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select *from Employee;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      2 | Tanvi     | Computer   | 50000.00 | 2023-09-21 |
+|      3 | Sneha     | HR         |  3300.00 | 2023-11-10 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 37000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+7 rows in set (0.00 sec)
+
+mysql> insert into Employee values(12,"Tanvi","Computer",50000.00,'2023-09-21');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select *from Employee;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      2 | Tanvi     | Computer   | 50000.00 | 2023-09-21 |
+|      3 | Sneha     | HR         |  3300.00 | 2023-11-10 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 37000.00 | 2023-06-25 |
+|     12 | Tanvi     | Computer   | 50000.00 | 2023-09-21 |
++--------+-----------+------------+----------+------------+
+8 rows in set (0.00 sec)
+
+mysql> delete from Employee where emp_id=12;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select *from Employee;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      2 | Tanvi     | Computer   | 50000.00 | 2023-09-21 |
+|      3 | Sneha     | HR         |  3300.00 | 2023-11-10 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 37000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+7 rows in set (0.00 sec)
+
+mysql> select Avg(Salary) where department="IT";
+ERROR 1054 (42S22): Unknown column 'Salary' in 'field list'
+mysql> select Avg(Salary) from Employee where department="IT";
++--------------+
+| Avg(Salary)  |
++--------------+
+| 34500.000000 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select *from Employee order by Salary desc;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|      2 | Tanvi     | Computer   | 50000.00 | 2023-09-21 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|     11 | Rahul     | IT         | 37000.00 | 2023-06-25 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      3 | Sneha     | HR         |  3300.00 | 2023-11-10 |
++--------+-----------+------------+----------+------------+
+7 rows in set (0.00 sec)
+
+mysql> select emp_name from Employee where salary between 30000 and 50000 order by asc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'asc' at line 1
+mysql> select emp_name from Employee where Salary between 30000 and 50000 order by asc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'asc' at line 1
+mysql> select emp_name from Employee where Salary between 30000 and 50000 order by Salary asc;
++----------+
+| emp_name |
++----------+
+| Rohan    |
+| Rahul    |
+| Vikram   |
+| Anjali   |
+| Tanvi    |
++----------+
+5 rows in set (0.00 sec)
+
+mysql> select emp_name,Salary from Employee where Salary between 30000 and 50000 order by Salary asc;
++----------+----------+
+| emp_name | Salary   |
++----------+----------+
+| Rohan    | 32000.00 |
+| Rahul    | 37000.00 |
+| Vikram   | 38000.00 |
+| Anjali   | 42000.00 |
+| Tanvi    | 50000.00 |
++----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select emp_id,emp_name,Salary from Employee where Salary between 30000 and 50000 order by Salary asc;
++--------+----------+----------+
+| emp_id | emp_name | Salary   |
++--------+----------+----------+
+|      6 | Rohan    | 32000.00 |
+|     11 | Rahul    | 37000.00 |
+|      8 | Vikram   | 38000.00 |
+|      9 | Anjali   | 42000.00 |
+|      2 | Tanvi    | 50000.00 |
++--------+----------+----------+
+5 rows in set (0.00 sec)
+
+ ysql> select *from Employee where department Not in('HR') and Salary>25000;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      2 | Tanvi     | Computer   | 50000.00 | 2023-09-21 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 37000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select *from Employee where name not like "A%" and Salary>30000;
+ERROR 1054 (42S22): Unknown column 'name' in 'where clause'
+mysql> select *from Employee where emp_name not like "A%" and Salary>30000;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      2 | Tanvi     | Computer   | 50000.00 | 2023-09-21 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram    | Finanace   | 38000.00 | 2022-08-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 37000.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select *from Employee where join_date between '2021-01-01' and '2023-12-31' order by join_date desc;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | Salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      3 | Sneha    | HR         |  3300.00 | 2023-11-10 |
+|      2 | Tanvi    | Computer   | 50000.00 | 2023-09-21 |
+|     11 | Rahul    | IT         | 37000.00 | 2023-06-25 |
+|      8 | Vikram   | Finanace   | 38000.00 | 2022-08-18 |
++--------+----------+------------+----------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select emp_id,emp_name from Employee where Salary%5000;
++--------+-----------+
+| emp_id | emp_name  |
++--------+-----------+
+|      3 | Sneha     |
+|      6 | Rohan     |
+|      8 | Vikram    |
+|      9 | Anjali    |
+|     10 | Pratiksha |
+|     11 | Rahul     |
++--------+-----------+
+6 rows in set (0.00 sec)
