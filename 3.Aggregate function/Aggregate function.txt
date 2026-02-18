@@ -1,0 +1,370 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| abc                |
+| college            |
+| information_schema |
+| j2025              |
+| mydb               |
+| mysql              |
+| performance_schema |
+| pp                 |
+| pp50               |
+| practice           |
+| sys                |
+| team               |
+| temp               |
+| voice_tasks        |
++--------------------+
+14 rows in set (0.01 sec)
+
+mysql> create database Billing;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use Billing;
+Database changed
+mysql> create table Product(Id int primary key,Name varchar(60) not null,Price int not null,Brand varchar(40) not null,Des varchar(30) not null);
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> insert into Product(1, 'Basmati Rice', 50, 'TATA', 'Premium food grain');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1, 'Basmati Rice', 50, 'TATA', 'Premium food grain')' at line 1
+mysql> insert into Product values(1, 'Basmati Rice', 50, 'TATA', 'Premium food grain');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into Product values(2, 'Britannia Biscuit', 20, 'Britannia', 'Food snack');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Product values(3, 'Patanjali Honey', 120, 'Patanjali', 'Natural food product);
+    '> ;
+    '> ^C
+mysql> insert into Product values(3, 'Patanjali Honey', 120, 'Patanjali', 'Natural food product');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Product values(4, 'Parle-G', 10, 'Parle', 'Food biscuit');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Product values(5, 'Redmi Phone', 150, 'Reliance', 'Electronic gadget');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Product values(56, 'Real Juice', 30, 'TATA', 'Beverage drink');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Product values(7, 'Samsung TV', 300, 'Reliance', 'Electronic appliance');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Product values(8, 'Boroplus Cream', 25, 'TATA', 'Healthcare product');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Product values(9, 'Puma Shoes', 80, 'Puma', 'Sports wear');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Product values(10, 'Rajnigandha', 15, 'TATA', 'Mouth freshener');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Product values(11, 'Britannia Cake', 35, 'Britannia', 'Food product');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Product values(12, 'Philips Iron', 90, 'Reliance', 'Electronic appliance');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from Product;
++----+-------------------+-------+-----------+----------------------+
+| Id | Name              | Price | Brand     | Des                  |
++----+-------------------+-------+-----------+----------------------+
+|  1 | Basmati Rice      |    50 | TATA      | Premium food grain   |
+|  2 | Britannia Biscuit |    20 | Britannia | Food snack           |
+|  3 | Patanjali Honey   |   120 | Patanjali | Natural food product |
+|  4 | Parle-G           |    10 | Parle     | Food biscuit         |
+|  5 | Redmi Phone       |   150 | Reliance  | Electronic gadget    |
+|  7 | Samsung TV        |   300 | Reliance  | Electronic appliance |
+|  8 | Boroplus Cream    |    25 | TATA      | Healthcare product   |
+|  9 | Puma Shoes        |    80 | Puma      | Sports wear          |
+| 10 | Rajnigandha       |    15 | TATA      | Mouth freshener      |
+| 11 | Britannia Cake    |    35 | Britannia | Food product         |
+| 12 | Philips Iron      |    90 | Reliance  | Electronic appliance |
+| 56 | Real Juice        |    30 | TATA      | Beverage drink       |
++----+-------------------+-------+-----------+----------------------+
+12 rows in set (0.00 sec)
+
+mysql> update Product set Id=13 where Brand="TATA";
+ERROR 1062 (23000): Duplicate entry '13' for key 'product.PRIMARY'
+mysql> update Product set Id=13 where Id=56;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from Product;
++----+-------------------+-------+-----------+----------------------+
+| Id | Name              | Price | Brand     | Des                  |
++----+-------------------+-------+-----------+----------------------+
+|  1 | Basmati Rice      |    50 | TATA      | Premium food grain   |
+|  2 | Britannia Biscuit |    20 | Britannia | Food snack           |
+|  3 | Patanjali Honey   |   120 | Patanjali | Natural food product |
+|  4 | Parle-G           |    10 | Parle     | Food biscuit         |
+|  5 | Redmi Phone       |   150 | Reliance  | Electronic gadget    |
+|  7 | Samsung TV        |   300 | Reliance  | Electronic appliance |
+|  8 | Boroplus Cream    |    25 | TATA      | Healthcare product   |
+|  9 | Puma Shoes        |    80 | Puma      | Sports wear          |
+| 10 | Rajnigandha       |    15 | TATA      | Mouth freshener      |
+| 11 | Britannia Cake    |    35 | Britannia | Food product         |
+| 12 | Philips Iron      |    90 | Reliance  | Electronic appliance |
+| 13 | Real Juice        |    30 | TATA      | Beverage drink       |
++----+-------------------+-------+-----------+----------------------+
+12 rows in set (0.00 sec)
+
+mysql> select *from Product order by Price;
++----+-------------------+-------+-----------+----------------------+
+| Id | Name              | Price | Brand     | Des                  |
++----+-------------------+-------+-----------+----------------------+
+|  4 | Parle-G           |    10 | Parle     | Food biscuit         |
+| 10 | Rajnigandha       |    15 | TATA      | Mouth freshener      |
+|  2 | Britannia Biscuit |    20 | Britannia | Food snack           |
+|  8 | Boroplus Cream    |    25 | TATA      | Healthcare product   |
+| 13 | Real Juice        |    30 | TATA      | Beverage drink       |
+| 11 | Britannia Cake    |    35 | Britannia | Food product         |
+|  1 | Basmati Rice      |    50 | TATA      | Premium food grain   |
+|  9 | Puma Shoes        |    80 | Puma      | Sports wear          |
+| 12 | Philips Iron      |    90 | Reliance  | Electronic appliance |
+|  3 | Patanjali Honey   |   120 | Patanjali | Natural food product |
+|  5 | Redmi Phone       |   150 | Reliance  | Electronic gadget    |
+|  7 | Samsung TV        |   300 | Reliance  | Electronic appliance |
++----+-------------------+-------+-----------+----------------------+
+12 rows in set (0.00 sec)
+
+mysql> select *from Product order by Id;
++----+-------------------+-------+-----------+----------------------+
+| Id | Name              | Price | Brand     | Des                  |
++----+-------------------+-------+-----------+----------------------+
+|  1 | Basmati Rice      |    50 | TATA      | Premium food grain   |
+|  2 | Britannia Biscuit |    20 | Britannia | Food snack           |
+|  3 | Patanjali Honey   |   120 | Patanjali | Natural food product |
+|  4 | Parle-G           |    10 | Parle     | Food biscuit         |
+|  5 | Redmi Phone       |   150 | Reliance  | Electronic gadget    |
+|  7 | Samsung TV        |   300 | Reliance  | Electronic appliance |
+|  8 | Boroplus Cream    |    25 | TATA      | Healthcare product   |
+|  9 | Puma Shoes        |    80 | Puma      | Sports wear          |
+| 10 | Rajnigandha       |    15 | TATA      | Mouth freshener      |
+| 11 | Britannia Cake    |    35 | Britannia | Food product         |
+| 12 | Philips Iron      |    90 | Reliance  | Electronic appliance |
+| 13 | Real Juice        |    30 | TATA      | Beverage drink       |
++----+-------------------+-------+-----------+----------------------+
+12 rows in set (0.00 sec)
+
+
+mysql> insert into Product values(14,"cab helmet",400,"TATA","Provide security");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select Id,Name from Product where name Like "%b%";
++----+-------------------+
+| Id | Name              |
++----+-------------------+
+|  1 | Basmati Rice      |
+|  2 | Britannia Biscuit |
+|  8 | Boroplus Cream    |
+| 11 | Britannia Cake    |
+| 14 | cab helmet        |
++----+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> select Id,Name from Product where name Like "%nia" and Price>10;
+Empty set (0.00 sec)
+
+mysql> select Id,Name from Product where Name Like "%nia" and Price>10;
+Empty set (0.00 sec)
+
+mysql> select Id,Name from Product where Name Like "_%nia";
+Empty set (0.00 sec)
+
+mysql> select Id,Name from Product where Name Like '%nia' and Price>10;
+Empty set (0.00 sec)
+
+mysql> insert into Product values(15,"Britania",300,"Biscuit","contains more Proteins");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select Id,Name from Product where Name Like '%nia' and Price>10;
++----+----------+
+| Id | Name     |
++----+----------+
+| 15 | Britania |
++----+----------+
+1 row in set (0.00 sec)
+
+mysql> select Id,Name from Product where Name Like "p%" between Price>=5 and Price<=20;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'between Price>=5 and Price<=20' at line 1
+mysql> select Id,Name from Product where Name Like "p%" Price between Price>=5 and Price<=20;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Price between Price>=5 and Price<=20' at line 1
+mysql> select Id,Name from Product where Name Like "p%" and Price between Price>=5 and Price<=20;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '>=5 and Price<=20' at line 1
+mysql> select Id,Name from Product where Name Like "p%" and Price between 5 and 20;
++----+---------+
+| Id | Name    |
++----+---------+
+|  4 | Parle-G |
++----+---------+
+1 row in set (0.00 sec)
+
+mysql> select *from Product where name Like "B%" and Price between 90 and 300;
++----+----------+-------+---------+------------------------+
+| Id | Name     | Price | Brand   | Des                    |
++----+----------+-------+---------+------------------------+
+| 15 | Britania |   300 | Biscuit | contains more Proteins |
++----+----------+-------+---------+------------------------+
+1 row in set (0.00 sec)
+
+mysql> select *from Product where name Like "B%" and Price between 80 and 300;
++----+----------+-------+---------+------------------------+
+| Id | Name     | Price | Brand   | Des                    |
++----+----------+-------+---------+------------------------+
+| 15 | Britania |   300 | Biscuit | contains more Proteins |
++----+----------+-------+---------+------------------------+
+1 row in set (0.00 sec)
+
+mysql> select *from Product where name Like "B%" and Price between 70 and 300;
++----+----------+-------+---------+------------------------+
+| Id | Name     | Price | Brand   | Des                    |
++----+----------+-------+---------+------------------------+
+| 15 | Britania |   300 | Biscuit | contains more Proteins |
++----+----------+-------+---------+------------------------+
+1 row in set (0.00 sec)
+
+mysql> select count(Brand) as Brand form Product where Brand="TATA";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'form Product where Brand="TATA"' at line 1
+mysql> select count(Brand) as Brand from Product where Brand="TATA";
++-------+
+| Brand |
++-------+
+|     5 |
++-------+
+1 row in set (0.00 sec)
+
+ ysql> select Id,Name,count(Brand) as Brand from Product where Brand="TATA";
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'billing.Product.Id'; this is incompatible with sql_mode=only_full_group_by
+mysql> select count(Brand) as Brand from Product where Brand="TATA";
++-------+
+| Brand |
++-------+
+|     5 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select Id,Name,count(Brand) as Brand from Product where Brand="TATA"; ^C
+mysql> select count(Id) as Total from Product where Price>10 and Price between 10 and 100;
++-------+
+| Total |
++-------+
+|     8 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select  *from Product where Price>10 and Price between 10 and 100;
++----+-------------------+-------+-----------+----------------------+
+| Id | Name              | Price | Brand     | Des                  |
++----+-------------------+-------+-----------+----------------------+
+|  1 | Basmati Rice      |    50 | TATA      | Premium food grain   |
+|  2 | Britannia Biscuit |    20 | Britannia | Food snack           |
+|  8 | Boroplus Cream    |    25 | TATA      | Healthcare product   |
+|  9 | Puma Shoes        |    80 | Puma      | Sports wear          |
+| 10 | Rajnigandha       |    15 | TATA      | Mouth freshener      |
+| 11 | Britannia Cake    |    35 | Britannia | Food product         |
+| 12 | Philips Iron      |    90 | Reliance  | Electronic appliance |
+| 13 | Real Juice        |    30 | TATA      | Beverage drink       |
++----+-------------------+-------+-----------+----------------------+
+8 rows in set (0.00 sec)
+
+mysql> select sum(Price) as Total from Product ;
++-------+
+| Total |
++-------+
+|  1625 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select count(Id) as sr.no,sum(Price) as Total from Product ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.no,sum(Price) as Total from Product' at line 1
+mysql> select count(Id) as srno,sum(Price) as Total from Product ;
++------+-------+
+| srno | Total |
++------+-------+
+|   14 |  1625 |
++------+-------+
+1 row in set (0.00 sec)
+
+mysql> select count(Id) as srno,sum(Price) as Total Bill from Product ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Bill from Product' at line 1
+mysql> select count(Id) as srno,sum(Price) as Total_bill from Product ;
++------+------------+
+| srno | Total_bill |
++------+------------+
+|   14 |       1625 |
++------+------------+
+1 row in set (0.00 sec)
+
+mysql> select Avg(Price) as Average_Price from Product;
++---------------+
+| Average_Price |
++---------------+
+|      116.0714 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select min(Price) as min_price form Product;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'form Product' at line 1
+mysql> select min(Price) as min_price from Product;
++-----------+
+| min_price |
++-----------+
+|        10 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select max(Price) as max_price from Product;
++-----------+
+| max_price |
++-----------+
+|       400 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> slect *from Product where Brand="TATA" and Brand="Reliance";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'slect *from Product where Brand="TATA" and Brand="Reliance"' at line 1
+mysql> select *from Product where Brand="TATA" and Brand="Reliance";
+Empty set (0.00 sec)
+
+mysql> select *from Product where Brand="TATA" or Brand="Reliance";
++----+----------------+-------+----------+----------------------+
+| Id | Name           | Price | Brand    | Des                  |
++----+----------------+-------+----------+----------------------+
+|  1 | Basmati Rice   |    50 | TATA     | Premium food grain   |
+|  5 | Redmi Phone    |   150 | Reliance | Electronic gadget    |
+|  7 | Samsung TV     |   300 | Reliance | Electronic appliance |
+|  8 | Boroplus Cream |    25 | TATA     | Healthcare product   |
+| 10 | Rajnigandha    |    15 | TATA     | Mouth freshener      |
+| 12 | Philips Iron   |    90 | Reliance | Electronic appliance |
+| 13 | Real Juice     |    30 | TATA     | Beverage drink       |
+| 14 | cab helmet     |   400 | TATA     | Provide security     |
++----+----------------+-------+----------+----------------------+
+8 rows in set (0.00 sec)
+
+mysql> select *from Product where Desc like "%Electronic%";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Desc like "%Electronic%"' at line 1
+mysql> select *from Product where Des like "%Electronic%";
++----+--------------+-------+----------+----------------------+
+| Id | Name         | Price | Brand    | Des                  |
++----+--------------+-------+----------+----------------------+
+|  5 | Redmi Phone  |   150 | Reliance | Electronic gadget    |
+|  7 | Samsung TV   |   300 | Reliance | Electronic appliance |
+| 12 | Philips Iron |    90 | Reliance | Electronic appliance |
++----+--------------+-------+----------+----------------------+
+3 rows in set (0.00 sec)
+
+mysql> select *from Product where not Price between 10 and 100;
++----+-----------------+-------+-----------+------------------------+
+| Id | Name            | Price | Brand     | Des                    |
++----+-----------------+-------+-----------+------------------------+
+|  3 | Patanjali Honey |   120 | Patanjali | Natural food product   |
+|  5 | Redmi Phone     |   150 | Reliance  | Electronic gadget      |
+|  7 | Samsung TV      |   300 | Reliance  | Electronic appliance   |
+| 14 | cab helmet      |   400 | TATA      | Provide security       |
+| 15 | Britania        |   300 | Biscuit   | contains more Proteins |
++----+-----------------+-------+-----------+------------------------+
+5 rows in set (0.00 sec)
