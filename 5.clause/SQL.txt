@@ -1,0 +1,237 @@
+
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.44 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| abc                |
+| billing            |
+| college            |
+| information_schema |
+| j2025              |
+| mydb               |
+| mysql              |
+| performance_schema |
+| pp                 |
+| pp50               |
+| practice           |
+| sys                |
+| team               |
+| temp               |
+| voice_tasks        |
++--------------------+
+15 rows in set (0.03 sec)
+
+mysql> use billing
+Database changed
+mysql> show tables;
++-------------------+
+| Tables_in_billing |
++-------------------+
+| employee          |
+| product           |
++-------------------+
+2 rows in set (0.01 sec)
+
+mysql> select *from employee;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      2 | Tanvi     | Computer   | 57500.00 | 2023-09-21 |
+|      3 | Sneha     | HR         |  3795.00 | 2023-11-10 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram    | Finanace   | 43700.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 42550.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+7 rows in set (0.02 sec)
+
+mysql> select *from Employee
+    -> ;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      2 | Tanvi     | Computer   | 57500.00 | 2023-09-21 |
+|      3 | Sneha     | HR         |  3795.00 | 2023-11-10 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram    | Finanace   | 43700.00 | 2022-08-18 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|     11 | Rahul     | IT         | 42550.00 | 2023-06-25 |
++--------+-----------+------------+----------+------------+
+7 rows in set (0.15 sec)
+
+mysql> select avg(Salary) as Salary group by department;
+ERROR 1054 (42S22): Unknown column 'Salary' in 'field list'
+mysql> select avg(Salary) as salary from Employee group by department;
++--------------+
+| salary       |
++--------------+
+| 57500.000000 |
+|  3795.000000 |
+| 37275.000000 |
+| 43700.000000 |
+| 47000.000000 |
++--------------+
+5 rows in set (0.02 sec)
+
+mysql> select avg(Salary),department as salary from Employee group by department;
++--------------+-----------+
+| avg(Salary)  | salary    |
++--------------+-----------+
+| 57500.000000 | Computer  |
+|  3795.000000 | HR        |
+| 37275.000000 | IT        |
+| 43700.000000 | Finanace  |
+| 47000.000000 | Marketing |
++--------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select avg(Salary),department as salary from Employee group by department order by Salary desc;
++--------------+-----------+
+| avg(Salary)  | salary    |
++--------------+-----------+
+| 47000.000000 | Marketing |
+| 37275.000000 | IT        |
+|  3795.000000 | HR        |
+| 43700.000000 | Finanace  |
+| 57500.000000 | Computer  |
++--------------+-----------+
+5 rows in set (0.01 sec)
+
+mysql> select count(emp_id) as count,emp_name from Employee group by department;
+ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'billing.Employee.emp_name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select count(emp_id) as count from Employee group by department;
++-------+
+| count |
++-------+
+|     1 |
+|     1 |
+|     2 |
+|     1 |
+|     2 |
++-------+
+5 rows in set (0.00 sec)
+
+mysql> select department as department,count(emp_id) as count from Employee group by department;
++------------+-------+
+| department | count |
++------------+-------+
+| Computer   |     1 |
+| HR         |     1 |
+| IT         |     2 |
+| Finanace   |     1 |
+| Marketing  |     2 |
++------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select department as department,count(emp_id) as count from Employee group by department having count(emp_id)>1;
++------------+-------+
+| department | count |
++------------+-------+
+| IT         |     2 |
+| Marketing  |     2 |
++------------+-------+
+2 rows in set (0.01 sec)
+
+mysql> select department from Employee where salary>=30000;
++------------+
+| department |
++------------+
+| Computer   |
+| IT         |
+| Finanace   |
+| Marketing  |
+| Marketing  |
+| IT         |
++------------+
+6 rows in set (0.01 sec)
+
+mysql> select department from Employee group by department having salary>=30000;
+ERROR 1054 (42S22): Unknown column 'salary' in 'having clause'
+mysql> select department from Employee group by department having Salary>=30000;
+ERROR 1054 (42S22): Unknown column 'Salary' in 'having clause'
+mysql> select department from Employee group by department having salary>=30000;
+ERROR 1054 (42S22): Unknown column 'salary' in 'having clause'
+mysql> select department from Employee group by department having Salary>=3000;
+ERROR 1054 (42S22): Unknown column 'Salary' in 'having clause'
+mysql> select department from Employee group by department having Salary>3000;
+ERROR 1054 (42S22): Unknown column 'Salary' in 'having clause'
+mysql> select distinct department from Employee where salary<=30000;
++------------+
+| department |
++------------+
+| HR         |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select distinct department from Employee where salary>=30000;
++------------+
+| department |
++------------+
+| Computer   |
+| IT         |
+| Finanace   |
+| Marketing  |
++------------+
+4 rows in set (0.00 sec)
+
+mysql> select emp_name from Employee where emp_name like "____";
+Empty set (0.01 sec)
+
+mysql> select emp_name from Employee where emp_name like "_____";
++----------+
+| emp_name |
++----------+
+| Tanvi    |
+| Sneha    |
+| Rohan    |
+| Rahul    |
++----------+
+4 rows in set (0.00 sec)
+
+mysql> select emp_name from Employee where emp_name like in("%a","%e","%i","o","%u");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'in("%a","%e","%i","o","%u")' at line 1
+mysql> select emp_name from Employee where emp_name like "%a" or "%e" or "%i" or "o" or "%u");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> select emp_name from Employee where emp_name like "%a" or "%e" or "%i" or "o" or "%u";
++-----------+
+| emp_name  |
++-----------+
+| Sneha     |
+| Pratiksha |
++-----------+
+2 rows in set, 4 warnings (0.01 sec)
+
+mysql> select *from Employee order by department asc then order by Salary desc
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'then order by Salary desc' at line 1
+mysql> select *from Employee order by department asc,order by Salary desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order by Salary desc' at line 1
+mysql> select *from Employee order by department asc,Salary desc;
++--------+-----------+------------+----------+------------+
+| emp_id | emp_name  | department | Salary   | join_date  |
++--------+-----------+------------+----------+------------+
+|      2 | Tanvi     | Computer   | 57500.00 | 2023-09-21 |
+|      8 | Vikram    | Finanace   | 43700.00 | 2022-08-18 |
+|      3 | Sneha     | HR         |  3795.00 | 2023-11-10 |
+|     11 | Rahul     | IT         | 42550.00 | 2023-06-25 |
+|      6 | Rohan     | IT         | 32000.00 | 2024-02-01 |
+|     10 | Pratiksha | Marketing  | 52000.00 | 2026-02-15 |
+|      9 | Anjali    | Marketing  | 42000.00 | 2026-02-18 |
++--------+-----------+------------+----------+------------+
+7 rows in set (0.01 sec)
+
+mysql>
