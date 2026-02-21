@@ -1,0 +1,454 @@
+
+//Joins
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| abc                |
+| billing            |
+| college            |
+| information_schema |
+| j2025              |
+| mydb               |
+| mysql              |
+| performance_schema |
+| pp                 |
+| pp50               |
+| practice           |
+| sys                |
+| team               |
+| temp               |
+| voice_tasks        |
++--------------------+
+15 rows in set (0.02 sec)
+
+mysql> use j2025;
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_j2025 |
++-----------------+
+| employee        |
+| project         |
++-----------------+
+2 rows in set (0.01 sec)
+
+mysql> select *from employee;
++--------+-----------------+--------------------+-----------+------------+------------+
+| emp_id | emp_name        | designation        | salary    | manager_id | project_id |
++--------+-----------------+--------------------+-----------+------------+------------+
+|      1 | Amit Sharma     | Project Manager    | 120000.00 |       NULL |        101 |
+|      2 | Neha Verma      | Software Engineer  |  70000.00 |          1 |        101 |
+|      3 | Rahul Mehta     | UI Developer       |  70000.00 |          1 |        101 |
+|      4 | Priya Singh     | Project Manager    | 115000.00 |       NULL |        102 |
+|      5 | Karan Patel     | Backend Developer  |  80000.00 |          4 |        102 |
+|      6 | Sneha Kulkarni  | Frontend Developer |  75000.00 |          4 |        102 |
+|      7 | Vikas Rao       | ML Engineer        |  90000.00 |       NULL |        103 |
+|      8 | Anjali Deshmukh | Data Analyst       |  72000.00 |          7 |        103 |
+|      9 | Rohit Joshi     | Project Manager    | 110000.00 |       NULL |        104 |
+|     10 | Pooja Nair      | Java Developer     |  78000.00 |          9 |        104 |
+|     11 | tanvi jadhav    | python developer   |  89000.00 |       NULL |       NULL |
+|     12 | Ravwdi rathod   | ML developer       |  87777.00 |       NULL |       NULL |
++--------+-----------------+--------------------+-----------+------------+------------+
+12 rows in set (0.01 sec)
+
+mysql> select *from Project;
++------------+---------------------------+-----------+-------------+
+| project_id | project_name              | location  | budget      |
++------------+---------------------------+-----------+-------------+
+|        101 | Smart City Development    | Pune      | 50000000.00 |
+|        102 | E-Commerce Platform       | Bangalore | 25000000.00 |
+|        103 | AI Fire Detection System  | Hyderabad | 18000000.00 |
+|        104 | Banking Management System | Mumbai    | 30000000.00 |
++------------+---------------------------+-----------+-------------+
+4 rows in set (0.01 sec)
+
+mysql> select count(salary) from employee group by manager_id;
++---------------+
+| count(salary) |
++---------------+
+|             6 |
+|             2 |
+|             2 |
+|             1 |
+|             1 |
++---------------+
+5 rows in set (0.11 sec)
+
+mysql> select sum(salary) from employee group by manager_id;
++-------------+
+| sum(salary) |
++-------------+
+|   611777.00 |
+|   140000.00 |
+|   155000.00 |
+|    72000.00 |
+|    78000.00 |
++-------------+
+5 rows in set (0.01 sec)
+
+mysql> select sum(salary),manager_id from employee group by manager_id;
++-------------+------------+
+| sum(salary) | manager_id |
++-------------+------------+
+|   611777.00 |       NULL |
+|   140000.00 |          1 |
+|   155000.00 |          4 |
+|    72000.00 |          7 |
+|    78000.00 |          9 |
++-------------+------------+
+5 rows in set (0.02 sec)
+
+mysql> select e1.emp_name as emp1,e2.emp_name as emp2 from employee e1 cross join employee e2;
++-----------------+-----------------+
+| emp1            | emp2            |
++-----------------+-----------------+
+| Ravwdi rathod   | Amit Sharma     |
+| tanvi jadhav    | Amit Sharma     |
+| Pooja Nair      | Amit Sharma     |
+| Rohit Joshi     | Amit Sharma     |
+| Anjali Deshmukh | Amit Sharma     |
+| Vikas Rao       | Amit Sharma     |
+| Sneha Kulkarni  | Amit Sharma     |
+| Karan Patel     | Amit Sharma     |
+| Priya Singh     | Amit Sharma     |
+| Rahul Mehta     | Amit Sharma     |
+| Neha Verma      | Amit Sharma     |
+| Amit Sharma     | Amit Sharma     |
+| Ravwdi rathod   | Neha Verma      |
+| tanvi jadhav    | Neha Verma      |
+| Pooja Nair      | Neha Verma      |
+| Rohit Joshi     | Neha Verma      |
+| Anjali Deshmukh | Neha Verma      |
+| Vikas Rao       | Neha Verma      |
+| Sneha Kulkarni  | Neha Verma      |
+| Karan Patel     | Neha Verma      |
+| Priya Singh     | Neha Verma      |
+| Rahul Mehta     | Neha Verma      |
+| Neha Verma      | Neha Verma      |
+| Amit Sharma     | Neha Verma      |
+| Ravwdi rathod   | Rahul Mehta     |
+| tanvi jadhav    | Rahul Mehta     |
+| Pooja Nair      | Rahul Mehta     |
+| Rohit Joshi     | Rahul Mehta     |
+| Anjali Deshmukh | Rahul Mehta     |
+| Vikas Rao       | Rahul Mehta     |
+| Sneha Kulkarni  | Rahul Mehta     |
+| Karan Patel     | Rahul Mehta     |
+| Priya Singh     | Rahul Mehta     |
+| Rahul Mehta     | Rahul Mehta     |
+| Neha Verma      | Rahul Mehta     |
+| Amit Sharma     | Rahul Mehta     |
+| Ravwdi rathod   | Priya Singh     |
+| tanvi jadhav    | Priya Singh     |
+| Pooja Nair      | Priya Singh     |
+| Rohit Joshi     | Priya Singh     |
+| Anjali Deshmukh | Priya Singh     |
+| Vikas Rao       | Priya Singh     |
+| Sneha Kulkarni  | Priya Singh     |
+| Karan Patel     | Priya Singh     |
+| Priya Singh     | Priya Singh     |
+| Rahul Mehta     | Priya Singh     |
+| Neha Verma      | Priya Singh     |
+| Amit Sharma     | Priya Singh     |
+| Ravwdi rathod   | Karan Patel     |
+| tanvi jadhav    | Karan Patel     |
+| Pooja Nair      | Karan Patel     |
+| Rohit Joshi     | Karan Patel     |
+| Anjali Deshmukh | Karan Patel     |
+| Vikas Rao       | Karan Patel     |
+| Sneha Kulkarni  | Karan Patel     |
+| Karan Patel     | Karan Patel     |
+| Priya Singh     | Karan Patel     |
+| Rahul Mehta     | Karan Patel     |
+| Neha Verma      | Karan Patel     |
+| Amit Sharma     | Karan Patel     |
+| Ravwdi rathod   | Sneha Kulkarni  |
+| tanvi jadhav    | Sneha Kulkarni  |
+| Pooja Nair      | Sneha Kulkarni  |
+| Rohit Joshi     | Sneha Kulkarni  |
+| Anjali Deshmukh | Sneha Kulkarni  |
+| Vikas Rao       | Sneha Kulkarni  |
+| Sneha Kulkarni  | Sneha Kulkarni  |
+| Karan Patel     | Sneha Kulkarni  |
+| Priya Singh     | Sneha Kulkarni  |
+| Rahul Mehta     | Sneha Kulkarni  |
+| Neha Verma      | Sneha Kulkarni  |
+| Amit Sharma     | Sneha Kulkarni  |
+| Ravwdi rathod   | Vikas Rao       |
+| tanvi jadhav    | Vikas Rao       |
+| Pooja Nair      | Vikas Rao       |
+| Rohit Joshi     | Vikas Rao       |
+| Anjali Deshmukh | Vikas Rao       |
+| Vikas Rao       | Vikas Rao       |
+| Sneha Kulkarni  | Vikas Rao       |
+| Karan Patel     | Vikas Rao       |
+| Priya Singh     | Vikas Rao       |
+| Rahul Mehta     | Vikas Rao       |
+| Neha Verma      | Vikas Rao       |
+| Amit Sharma     | Vikas Rao       |
+| Ravwdi rathod   | Anjali Deshmukh |
+| tanvi jadhav    | Anjali Deshmukh |
+| Pooja Nair      | Anjali Deshmukh |
+| Rohit Joshi     | Anjali Deshmukh |
+| Anjali Deshmukh | Anjali Deshmukh |
+| Vikas Rao       | Anjali Deshmukh |
+| Sneha Kulkarni  | Anjali Deshmukh |
+| Karan Patel     | Anjali Deshmukh |
+| Priya Singh     | Anjali Deshmukh |
+| Rahul Mehta     | Anjali Deshmukh |
+| Neha Verma      | Anjali Deshmukh |
+| Amit Sharma     | Anjali Deshmukh |
+| Ravwdi rathod   | Rohit Joshi     |
+| tanvi jadhav    | Rohit Joshi     |
+| Pooja Nair      | Rohit Joshi     |
+| Rohit Joshi     | Rohit Joshi     |
+| Anjali Deshmukh | Rohit Joshi     |
+| Vikas Rao       | Rohit Joshi     |
+| Sneha Kulkarni  | Rohit Joshi     |
+| Karan Patel     | Rohit Joshi     |
+| Priya Singh     | Rohit Joshi     |
+| Rahul Mehta     | Rohit Joshi     |
+| Neha Verma      | Rohit Joshi     |
+| Amit Sharma     | Rohit Joshi     |
+| Ravwdi rathod   | Pooja Nair      |
+| tanvi jadhav    | Pooja Nair      |
+| Pooja Nair      | Pooja Nair      |
+| Rohit Joshi     | Pooja Nair      |
+| Anjali Deshmukh | Pooja Nair      |
+| Vikas Rao       | Pooja Nair      |
+| Sneha Kulkarni  | Pooja Nair      |
+| Karan Patel     | Pooja Nair      |
+| Priya Singh     | Pooja Nair      |
+| Rahul Mehta     | Pooja Nair      |
+| Neha Verma      | Pooja Nair      |
+| Amit Sharma     | Pooja Nair      |
+| Ravwdi rathod   | tanvi jadhav    |
+| tanvi jadhav    | tanvi jadhav    |
+| Pooja Nair      | tanvi jadhav    |
+| Rohit Joshi     | tanvi jadhav    |
+| Anjali Deshmukh | tanvi jadhav    |
+| Vikas Rao       | tanvi jadhav    |
+| Sneha Kulkarni  | tanvi jadhav    |
+| Karan Patel     | tanvi jadhav    |
+| Priya Singh     | tanvi jadhav    |
+| Rahul Mehta     | tanvi jadhav    |
+| Neha Verma      | tanvi jadhav    |
+| Amit Sharma     | tanvi jadhav    |
+| Ravwdi rathod   | Ravwdi rathod   |
+| tanvi jadhav    | Ravwdi rathod   |
+| Pooja Nair      | Ravwdi rathod   |
+| Rohit Joshi     | Ravwdi rathod   |
+| Anjali Deshmukh | Ravwdi rathod   |
+| Vikas Rao       | Ravwdi rathod   |
+| Sneha Kulkarni  | Ravwdi rathod   |
+| Karan Patel     | Ravwdi rathod   |
+| Priya Singh     | Ravwdi rathod   |
+| Rahul Mehta     | Ravwdi rathod   |
+| Neha Verma      | Ravwdi rathod   |
+| Amit Sharma     | Ravwdi rathod   |
++-----------------+-----------------+
+144 rows in set (0.04 sec)
+
+mysql> select e1.emp_name as emp1,e2.emp_name as emp2 from employee e2 cross join employee e1
+    -> ;
++-----------------+-----------------+
+| emp1            | emp2            |
++-----------------+-----------------+
+| Amit Sharma     | Ravwdi rathod   |
+| Amit Sharma     | tanvi jadhav    |
+| Amit Sharma     | Pooja Nair      |
+| Amit Sharma     | Rohit Joshi     |
+| Amit Sharma     | Anjali Deshmukh |
+| Amit Sharma     | Vikas Rao       |
+| Amit Sharma     | Sneha Kulkarni  |
+| Amit Sharma     | Karan Patel     |
+| Amit Sharma     | Priya Singh     |
+| Amit Sharma     | Rahul Mehta     |
+| Amit Sharma     | Neha Verma      |
+| Amit Sharma     | Amit Sharma     |
+| Neha Verma      | Ravwdi rathod   |
+| Neha Verma      | tanvi jadhav    |
+| Neha Verma      | Pooja Nair      |
+| Neha Verma      | Rohit Joshi     |
+| Neha Verma      | Anjali Deshmukh |
+| Neha Verma      | Vikas Rao       |
+| Neha Verma      | Sneha Kulkarni  |
+| Neha Verma      | Karan Patel     |
+| Neha Verma      | Priya Singh     |
+| Neha Verma      | Rahul Mehta     |
+| Neha Verma      | Neha Verma      |
+| Neha Verma      | Amit Sharma     |
+| Rahul Mehta     | Ravwdi rathod   |
+| Rahul Mehta     | tanvi jadhav    |
+| Rahul Mehta     | Pooja Nair      |
+| Rahul Mehta     | Rohit Joshi     |
+| Rahul Mehta     | Anjali Deshmukh |
+| Rahul Mehta     | Vikas Rao       |
+| Rahul Mehta     | Sneha Kulkarni  |
+| Rahul Mehta     | Karan Patel     |
+| Rahul Mehta     | Priya Singh     |
+| Rahul Mehta     | Rahul Mehta     |
+| Rahul Mehta     | Neha Verma      |
+| Rahul Mehta     | Amit Sharma     |
+| Priya Singh     | Ravwdi rathod   |
+| Priya Singh     | tanvi jadhav    |
+| Priya Singh     | Pooja Nair      |
+| Priya Singh     | Rohit Joshi     |
+| Priya Singh     | Anjali Deshmukh |
+| Priya Singh     | Vikas Rao       |
+| Priya Singh     | Sneha Kulkarni  |
+| Priya Singh     | Karan Patel     |
+| Priya Singh     | Priya Singh     |
+| Priya Singh     | Rahul Mehta     |
+| Priya Singh     | Neha Verma      |
+| Priya Singh     | Amit Sharma     |
+| Karan Patel     | Ravwdi rathod   |
+| Karan Patel     | tanvi jadhav    |
+| Karan Patel     | Pooja Nair      |
+| Karan Patel     | Rohit Joshi     |
+| Karan Patel     | Anjali Deshmukh |
+| Karan Patel     | Vikas Rao       |
+| Karan Patel     | Sneha Kulkarni  |
+| Karan Patel     | Karan Patel     |
+| Karan Patel     | Priya Singh     |
+| Karan Patel     | Rahul Mehta     |
+| Karan Patel     | Neha Verma      |
+| Karan Patel     | Amit Sharma     |
+| Sneha Kulkarni  | Ravwdi rathod   |
+| Sneha Kulkarni  | tanvi jadhav    |
+| Sneha Kulkarni  | Pooja Nair      |
+| Sneha Kulkarni  | Rohit Joshi     |
+| Sneha Kulkarni  | Anjali Deshmukh |
+| Sneha Kulkarni  | Vikas Rao       |
+| Sneha Kulkarni  | Sneha Kulkarni  |
+| Sneha Kulkarni  | Karan Patel     |
+| Sneha Kulkarni  | Priya Singh     |
+| Sneha Kulkarni  | Rahul Mehta     |
+| Sneha Kulkarni  | Neha Verma      |
+| Sneha Kulkarni  | Amit Sharma     |
+| Vikas Rao       | Ravwdi rathod   |
+| Vikas Rao       | tanvi jadhav    |
+| Vikas Rao       | Pooja Nair      |
+| Vikas Rao       | Rohit Joshi     |
+| Vikas Rao       | Anjali Deshmukh |
+| Vikas Rao       | Vikas Rao       |
+| Vikas Rao       | Sneha Kulkarni  |
+| Vikas Rao       | Karan Patel     |
+| Vikas Rao       | Priya Singh     |
+| Vikas Rao       | Rahul Mehta     |
+| Vikas Rao       | Neha Verma      |
+| Vikas Rao       | Amit Sharma     |
+| Anjali Deshmukh | Ravwdi rathod   |
+| Anjali Deshmukh | tanvi jadhav    |
+| Anjali Deshmukh | Pooja Nair      |
+| Anjali Deshmukh | Rohit Joshi     |
+| Anjali Deshmukh | Anjali Deshmukh |
+| Anjali Deshmukh | Vikas Rao       |
+| Anjali Deshmukh | Sneha Kulkarni  |
+| Anjali Deshmukh | Karan Patel     |
+| Anjali Deshmukh | Priya Singh     |
+| Anjali Deshmukh | Rahul Mehta     |
+| Anjali Deshmukh | Neha Verma      |
+| Anjali Deshmukh | Amit Sharma     |
+| Rohit Joshi     | Ravwdi rathod   |
+| Rohit Joshi     | tanvi jadhav    |
+| Rohit Joshi     | Pooja Nair      |
+| Rohit Joshi     | Rohit Joshi     |
+| Rohit Joshi     | Anjali Deshmukh |
+| Rohit Joshi     | Vikas Rao       |
+| Rohit Joshi     | Sneha Kulkarni  |
+| Rohit Joshi     | Karan Patel     |
+| Rohit Joshi     | Priya Singh     |
+| Rohit Joshi     | Rahul Mehta     |
+| Rohit Joshi     | Neha Verma      |
+| Rohit Joshi     | Amit Sharma     |
+| Pooja Nair      | Ravwdi rathod   |
+| Pooja Nair      | tanvi jadhav    |
+| Pooja Nair      | Pooja Nair      |
+| Pooja Nair      | Rohit Joshi     |
+| Pooja Nair      | Anjali Deshmukh |
+| Pooja Nair      | Vikas Rao       |
+| Pooja Nair      | Sneha Kulkarni  |
+| Pooja Nair      | Karan Patel     |
+| Pooja Nair      | Priya Singh     |
+| Pooja Nair      | Rahul Mehta     |
+| Pooja Nair      | Neha Verma      |
+| Pooja Nair      | Amit Sharma     |
+| tanvi jadhav    | Ravwdi rathod   |
+| tanvi jadhav    | tanvi jadhav    |
+| tanvi jadhav    | Pooja Nair      |
+| tanvi jadhav    | Rohit Joshi     |
+| tanvi jadhav    | Anjali Deshmukh |
+| tanvi jadhav    | Vikas Rao       |
+| tanvi jadhav    | Sneha Kulkarni  |
+| tanvi jadhav    | Karan Patel     |
+| tanvi jadhav    | Priya Singh     |
+| tanvi jadhav    | Rahul Mehta     |
+| tanvi jadhav    | Neha Verma      |
+| tanvi jadhav    | Amit Sharma     |
+| Ravwdi rathod   | Ravwdi rathod   |
+| Ravwdi rathod   | tanvi jadhav    |
+| Ravwdi rathod   | Pooja Nair      |
+| Ravwdi rathod   | Rohit Joshi     |
+| Ravwdi rathod   | Anjali Deshmukh |
+| Ravwdi rathod   | Vikas Rao       |
+| Ravwdi rathod   | Sneha Kulkarni  |
+| Ravwdi rathod   | Karan Patel     |
+| Ravwdi rathod   | Priya Singh     |
+| Ravwdi rathod   | Rahul Mehta     |
+| Ravwdi rathod   | Neha Verma      |
+| Ravwdi rathod   | Amit Sharma     |
++-----------------+-----------------+
+144 rows in set (0.00 sec)
+
+mysql> slect *from employee;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'slect *from employee' at line 1
+mysql> select *from employee;
++--------+-----------------+--------------------+-----------+------------+------------+
+| emp_id | emp_name        | designation        | salary    | manager_id | project_id |
++--------+-----------------+--------------------+-----------+------------+------------+
+|      1 | Amit Sharma     | Project Manager    | 120000.00 |       NULL |        101 |
+|      2 | Neha Verma      | Software Engineer  |  70000.00 |          1 |        101 |
+|      3 | Rahul Mehta     | UI Developer       |  70000.00 |          1 |        101 |
+|      4 | Priya Singh     | Project Manager    | 115000.00 |       NULL |        102 |
+|      5 | Karan Patel     | Backend Developer  |  80000.00 |          4 |        102 |
+|      6 | Sneha Kulkarni  | Frontend Developer |  75000.00 |          4 |        102 |
+|      7 | Vikas Rao       | ML Engineer        |  90000.00 |       NULL |        103 |
+|      8 | Anjali Deshmukh | Data Analyst       |  72000.00 |          7 |        103 |
+|      9 | Rohit Joshi     | Project Manager    | 110000.00 |       NULL |        104 |
+|     10 | Pooja Nair      | Java Developer     |  78000.00 |          9 |        104 |
+|     11 | tanvi jadhav    | python developer   |  89000.00 |       NULL |       NULL |
+|     12 | Ravwdi rathod   | ML developer       |  87777.00 |       NULL |       NULL |
++--------+-----------------+--------------------+-----------+------------+------------+
+12 rows in set (0.00 sec)
+
+mysql> slect count(*),e1.emp_name as emp1,e2.emp_name as emp2 from employee e2 cross join employee e1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'slect count(*),e1.emp_name as emp1,e2.emp_name as emp2 from employee e2 cross jo' at line 1
+mysql> select count(*),e1.emp_name as emp1,e2.emp_name as emp2 from employee e2 cross join employee e1;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #2 of SELECT list contains nonaggregated column 'j2025.e1.emp_name'; this is incompatible with sql_mode=only_full_group_by
+mysql> select count(*) from employee e2 cross join employee e1;
++----------+
+| count(*) |
++----------+
+|      144 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> select count(*) from employee e2 cross join employee e1 where e1.emp_name!=e2.emp_name;
++----------+
+| count(*) |
++----------+
+|      132 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> create database OnlineExamDb

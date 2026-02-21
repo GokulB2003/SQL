@@ -156,8 +156,7 @@ mysql>
 mysql> select emp_id,emp_name,designation,salary
     -> from salary where project_id is null;
 ERROR 1146 (42S02): Table 'j2025.salary' doesn't exist
-mysql> from Salary where project_id is null;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from Salary where project_id is null' at line 1
+
 mysql> select emp_id,emp_name,designation,salary
     -> from Project where project_id is null;
 ERROR 1054 (42S22): Unknown column 'emp_id' in 'field list'
@@ -173,8 +172,7 @@ mysql> select emp_id,emp_name,designation,salary
 mysql> insert into employee values(12,"Ravwdi rathod","ML developer",87777.00,Null,null);
 Query OK, 1 row affected (0.01 sec)
 
-mysql> selct count(*) from employee;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selct count(*) from employee' at line 1
+
 mysql> select count(*) from employee;
 +----------+
 | count(*) |
@@ -239,3 +237,34 @@ mysql> select e.emp_name,p.Project_name from Project p right join employee e on 
 | Ravwdi rathod   | NULL                      |
 +-----------------+---------------------------+
 12 rows in set (0.00 sec)
+
+
+mysql> select e.emp_name,p.manager_id from employee e inner join employee p on e.manager_id=p.manager_id;
++-----------------+------------+
+| emp_name        | manager_id |
++-----------------+------------+
+| Rahul Mehta     |          1 |
+| Neha Verma      |          1 |
+| Rahul Mehta     |          1 |
+| Neha Verma      |          1 |
+| Sneha Kulkarni  |          4 |
+| Karan Patel     |          4 |
+| Sneha Kulkarni  |          4 |
+| Karan Patel     |          4 |
+| Anjali Deshmukh |          7 |
+| Pooja Nair      |          9 |
++-----------------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select e.emp_name,p.manager_id from employee e inner join employee p on e.manager_id=p.emp_id;
++-----------------+------------+
+| emp_name        | manager_id |
++-----------------+------------+
+| Neha Verma      |       NULL |
+| Rahul Mehta     |       NULL |
+| Karan Patel     |       NULL |
+| Sneha Kulkarni  |       NULL |
+| Anjali Deshmukh |       NULL |
+| Pooja Nair      |       NULL |
++-----------------+------------+
+6 rows in set (0.00 sec)
