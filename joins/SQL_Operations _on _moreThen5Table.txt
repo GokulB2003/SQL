@@ -1538,6 +1538,1065 @@ mysql> select *from ExamSchedule;
 +---------+------------+------------+------------------+
 4 rows in set (0.01 sec)
 
-mysql
+MySQL
+mysql> select *from student;
++------------+----------------+------------------+--------+-----------+-------------------+
+| student_id | student_name   | email            | gender | city      | registration_date |
++------------+----------------+------------------+--------+-----------+-------------------+
+|          1 | Rahul Sharma   | rahul@gmail.com  | Male   | Delhi     | 2024-01-10        |
+|          2 | Priya Mehta    | priya@gmail.com  | Female | Mumbai    | 2024-02-15        |
+|          3 | Amit Verma     | amit@gmail.com   | Male   | Bangalore | 2024-03-05        |
+|          4 | Sneha Reddy    | sneha@gmail.com  | Female | Hyderabad | 2024-01-20        |
+|          5 | Arjun Singh    | arjun@gmail.com  | Male   | Chennai   | 2024-02-01        |
+|          6 | sima jadhav    | sima@gmail.com   | Female | New York  | 2024-03-01        |
+|          7 | sneha pawar    | NULL             | Female | Pune      | 2024-09-09        |
+|         11 | Reshma dhawale | reshma@gmail.com | Female | Delhi     | 2024-01-05        |
++------------+----------------+------------------+--------+-----------+-------------------+
+8 rows in set (0.09 sec)
+
+mysql> select *from result;
++-----------+------------+---------+----------------+---------------+
+| result_id | student_id | exam_id | marks_obtained | result_status |
++-----------+------------+---------+----------------+---------------+
+|         1 |          1 |     201 |             85 | pass          |
+|         2 |          2 |     201 |             78 | Pass          |
+|         3 |          3 |     202 |             65 | Pass          |
+|         4 |          4 |     203 |             45 | Fail          |
+|         5 |          5 |     204 |             88 | Pass          |
+|         6 |          1 |     202 |             72 | Pass          |
+|         7 |          2 |     203 |             90 | Pass          |
++-----------+------------+---------+----------------+---------------+
+7 rows in set (0.01 sec)
+
+mysql> select s.student_name,count(student_id) from student s inner join result r on s.student_id=r.student_id group by exam_id;
+ERROR 1052 (23000): Column 'student_id' in field list is ambiguous
+mysql> select s.student_name,count(student_id) from student s inner join result r on s.student_id=r.student_id group by exam_id,student_name;
+ERROR 1052 (23000): Column 'student_id' in field list is ambiguous
+mysql> select s.student_name,count(s.student_id) from student s inner join result r on s.student_id=r.student_id group by exam_id,student_name;
++--------------+---------------------+
+| student_name | count(s.student_id) |
++--------------+---------------------+
+| Rahul Sharma |                   1 |
+| Priya Mehta  |                   1 |
+| Amit Verma   |                   1 |
+| Sneha Reddy  |                   1 |
+| Arjun Singh  |                   1 |
+| Rahul Sharma |                   1 |
+| Priya Mehta  |                   1 |
++--------------+---------------------+
+7 rows in set (0.01 sec)
+
+mysql> select s.student_name,count(s.exam_id) from student s inner join result r on s.student_id=r.student_id group by student_id,student_name;
+ERROR 1054 (42S22): Unknown column 's.exam_id' in 'field list'
+mysql> select s.student_name,count(r.exam_id) from student s inner join result r on s.student_id=r.student_id group by student_id,student_name;
+ERROR 1052 (23000): Column 'student_id' in group statement is ambiguous
+mysql> select s.student_name,count(r.exam_id) from student s inner join result r on s.student_id=r.student_id group by r.student_id,s.student_name;
++--------------+------------------+
+| student_name | count(r.exam_id) |
++--------------+------------------+
+| Rahul Sharma |                2 |
+| Priya Mehta  |                2 |
+| Amit Verma   |                1 |
+| Sneha Reddy  |                1 |
+| Arjun Singh  |                1 |
++--------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> select sb.subject_name,Avg(r.marks_obtained) from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by (r.student_id);
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'onlineexamdb.sb.subject_name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select sb.subject_name,Avg(r.marks_obtained) from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by r.student_id,sb.subject_name;
++--------------+-----------------------+
+| subject_name | Avg(r.marks_obtained) |
++--------------+-----------------------+
+| Mathematics  |               85.0000 |
+| Mathematics  |               78.0000 |
+| Physics      |               65.0000 |
+| Physics      |               72.0000 |
+| Chemistry    |               45.0000 |
+| Chemistry    |               90.0000 |
+| English      |               88.0000 |
++--------------+-----------------------+
+7 rows in set (0.01 sec)
+
+mysql> select *from result;
++-----------+------------+---------+----------------+---------------+
+| result_id | student_id | exam_id | marks_obtained | result_status |
++-----------+------------+---------+----------------+---------------+
+|         1 |          1 |     201 |             85 | pass          |
+|         2 |          2 |     201 |             78 | Pass          |
+|         3 |          3 |     202 |             65 | Pass          |
+|         4 |          4 |     203 |             45 | Fail          |
+|         5 |          5 |     204 |             88 | Pass          |
+|         6 |          1 |     202 |             72 | Pass          |
+|         7 |          2 |     203 |             90 | Pass          |
++-----------+------------+---------+----------------+---------------+
+7 rows in set (0.00 sec)
+
+mysql> select *from examSchedule;
++---------+------------+------------+------------------+
+| exam_id | subject_id | exam_date  | duration_minutes |
++---------+------------+------------+------------------+
+|     201 |        101 | 2024-05-10 |              120 |
+|     202 |        102 | 2024-05-12 |              120 |
+|     203 |        103 | 2024-05-14 |              120 |
+|     204 |        104 | 2024-05-16 |               90 |
++---------+------------+------------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> select sb.subject_name,Avg(r.marks_obtained) from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by sb.subject_name;
++--------------+-----------------------+
+| subject_name | Avg(r.marks_obtained) |
++--------------+-----------------------+
+| Mathematics  |               81.5000 |
+| Physics      |               68.5000 |
+| Chemistry    |               67.5000 |
+| English      |               88.0000 |
++--------------+-----------------------+
+4 rows in set (0.00 sec)
+
+mysql> select subject_id,subject_name,count(subject_id) from subject group by subject_name;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'onlineexamdb.subject.subject_id' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select subject_id,subject_name,count(subject_id) from subject group by subject_name,subject_id;
++------------+--------------+-------------------+
+| subject_id | subject_name | count(subject_id) |
++------------+--------------+-------------------+
+|        101 | Mathematics  |                 1 |
+|        102 | Physics      |                 1 |
+|        103 | Chemistry    |                 1 |
+|        104 | English      |                 1 |
+|        105 | Marathi      |                 1 |
+|        106 | Hindi        |                 1 |
++------------+--------------+-------------------+
+6 rows in set (0.00 sec)
+
+mysql> select *from subject;
++------------+--------------+-------------+
+| subject_id | subject_name | total_marks |
++------------+--------------+-------------+
+|        101 | Mathematics  |         100 |
+|        102 | Physics      |         100 |
+|        103 | Chemistry    |         100 |
+|        104 | English      |         100 |
+|        105 | Marathi      |          90 |
+|        106 | Hindi        |          80 |
++------------+--------------+-------------+
+6 rows in set (0.00 sec)
+
+mysql> select *from result;
++-----------+------------+---------+----------------+---------------+
+| result_id | student_id | exam_id | marks_obtained | result_status |
++-----------+------------+---------+----------------+---------------+
+|         1 |          1 |     201 |             85 | pass          |
+|         2 |          2 |     201 |             78 | Pass          |
+|         3 |          3 |     202 |             65 | Pass          |
+|         4 |          4 |     203 |             45 | Fail          |
+|         5 |          5 |     204 |             88 | Pass          |
+|         6 |          1 |     202 |             72 | Pass          |
+|         7 |          2 |     203 |             90 | Pass          |
++-----------+------------+---------+----------------+---------------+
+7 rows in set (0.00 sec)
+
+mysql> select *from ExamSchedule;
++---------+------------+------------+------------------+
+| exam_id | subject_id | exam_date  | duration_minutes |
++---------+------------+------------+------------------+
+|     201 |        101 | 2024-05-10 |              120 |
+|     202 |        102 | 2024-05-12 |              120 |
+|     203 |        103 | 2024-05-14 |              120 |
+|     204 |        104 | 2024-05-16 |               90 |
++---------+------------+------------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> select sb.subject_name,sb.subject_id from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by student_id having coun(student_id)>1;
+ERROR 1305 (42000): FUNCTION onlineexamdb.coun does not exist
+mysql> select sb.subject_name,sb.subject_id from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by student_id having count(student_id)>1;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'onlineexamdb.sb.subject_name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select sb.subject_name,sb.subject_id from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by r.student_id having count(r.student_id)>1;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***
+/
+ql> select *from student;
++------------+----------------+------------------+--------+-----------+-------------------+
+| student_id | student_name   | email            | gender | city      | registration_date |
++------------+----------------+------------------+--------+-----------+-------------------+
+|          1 | Rahul Sharma   | rahul@gmail.com  | Male   | Delhi     | 2024-01-10        |
+|          2 | Priya Mehta    | priya@gmail.com  | Female | Mumbai    | 2024-02-15        |
+|          3 | Amit Verma     | amit@gmail.com   | Male   | Bangalore | 2024-03-05        |
+|          4 | Sneha Reddy    | sneha@gmail.com  | Female | Hyderabad | 2024-01-20        |
+|          5 | Arjun Singh    | arjun@gmail.com  | Male   | Chennai   | 2024-02-01        |
+|          6 | sima jadhav    | sima@gmail.com   | Female | New York  | 2024-03-01        |
+|          7 | sneha pawar    | NULL             | Female | Pune      | 2024-09-09        |
+|         11 | Reshma dhawale | reshma@gmail.com | Female | Delhi     | 2024-01-05        |
++------------+----------------+------------------+--------+-----------+-------------------+
+8 rows in set (0.09 sec)
+
+mysql> select *from result;
++-----------+------------+---------+----------------+---------------+
+| result_id | student_id | exam_id | marks_obtained | result_status |
++-----------+------------+---------+----------------+---------------+
+|         1 |          1 |     201 |             85 | pass          |
+|         2 |          2 |     201 |             78 | Pass          |
+|         3 |          3 |     202 |             65 | Pass          |
+|         4 |          4 |     203 |             45 | Fail          |
+|         5 |          5 |     204 |             88 | Pass          |
+|         6 |          1 |     202 |             72 | Pass          |
+|         7 |          2 |     203 |             90 | Pass          |
++-----------+------------+---------+----------------+---------------+
+7 rows in set (0.01 sec)
+
+mysql> select s.student_name,count(student_id) from student s inner join result r on s.student_id=r.student_id group by exam_id;
+ERROR 1052 (23000): Column 'student_id' in field list is ambiguous
+mysql> select s.student_name,count(student_id) from student s inner join result r on s.student_id=r.student_id group by exam_id,student_name;
+ERROR 1052 (23000): Column 'student_id' in field list is ambiguous
+mysql> select s.student_name,count(s.student_id) from student s inner join result r on s.student_id=r.student_id group by exam_id,student_name;
++--------------+---------------------+
+| student_name | count(s.student_id) |
++--------------+---------------------+
+| Rahul Sharma |                   1 |
+| Priya Mehta  |                   1 |
+| Amit Verma   |                   1 |
+| Sneha Reddy  |                   1 |
+| Arjun Singh  |                   1 |
+| Rahul Sharma |                   1 |
+| Priya Mehta  |                   1 |
++--------------+---------------------+
+7 rows in set (0.01 sec)
+
+mysql> select s.student_name,count(s.exam_id) from student s inner join result r on s.student_id=r.student_id group by student_id,student_name;
+ERROR 1054 (42S22): Unknown column 's.exam_id' in 'field list'
+mysql> select s.student_name,count(r.exam_id) from student s inner join result r on s.student_id=r.student_id group by student_id,student_name;
+ERROR 1052 (23000): Column 'student_id' in group statement is ambiguous
+mysql> select s.student_name,count(r.exam_id) from student s inner join result r on s.student_id=r.student_id group by r.student_id,s.student_name;
++--------------+------------------+
+| student_name | count(r.exam_id) |
++--------------+------------------+
+| Rahul Sharma |                2 |
+| Priya Mehta  |                2 |
+| Amit Verma   |                1 |
+| Sneha Reddy  |                1 |
+| Arjun Singh  |                1 |
++--------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> select sb.subject_name,Avg(r.marks_obtained) from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by (r.student_id);
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'onlineexamdb.sb.subject_name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select sb.subject_name,Avg(r.marks_obtained) from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by r.student_id,sb.subject_name;
++--------------+-----------------------+
+| subject_name | Avg(r.marks_obtained) |
++--------------+-----------------------+
+| Mathematics  |               85.0000 |
+| Mathematics  |               78.0000 |
+| Physics      |               65.0000 |
+| Physics      |               72.0000 |
+| Chemistry    |               45.0000 |
+| Chemistry    |               90.0000 |
+| English      |               88.0000 |
++--------------+-----------------------+
+7 rows in set (0.01 sec)
+
+mysql> select *from result;
++-----------+------------+---------+----------------+---------------+
+| result_id | student_id | exam_id | marks_obtained | result_status |
++-----------+------------+---------+----------------+---------------+
+|         1 |          1 |     201 |             85 | pass          |
+|         2 |          2 |     201 |             78 | Pass          |
+|         3 |          3 |     202 |             65 | Pass          |
+|         4 |          4 |     203 |             45 | Fail          |
+|         5 |          5 |     204 |             88 | Pass          |
+|         6 |          1 |     202 |             72 | Pass          |
+|         7 |          2 |     203 |             90 | Pass          |
++-----------+------------+---------+----------------+---------------+
+7 rows in set (0.00 sec)
+
+mysql> select *from examSchedule;
++---------+------------+------------+------------------+
+| exam_id | subject_id | exam_date  | duration_minutes |
++---------+------------+------------+------------------+
+|     201 |        101 | 2024-05-10 |              120 |
+|     202 |        102 | 2024-05-12 |              120 |
+|     203 |        103 | 2024-05-14 |              120 |
+|     204 |        104 | 2024-05-16 |               90 |
++---------+------------+------------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> select sb.subject_name,Avg(r.marks_obtained) from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by sb.subject_name;
++--------------+-----------------------+
+| subject_name | Avg(r.marks_obtained) |
++--------------+-----------------------+
+| Mathematics  |               81.5000 |
+| Physics      |               68.5000 |
+| Chemistry    |               67.5000 |
+| English      |               88.0000 |
++--------------+-----------------------+
+4 rows in set (0.00 sec)
+
+mysql> select subject_id,subject_name,count(subject_id) from subject group by subject_name;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'onlineexamdb.subject.subject_id' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select subject_id,subject_name,count(subject_id) from subject group by subject_name,subject_id;
++------------+--------------+-------------------+
+| subject_id | subject_name | count(subject_id) |
++------------+--------------+-------------------+
+|        101 | Mathematics  |                 1 |
+|        102 | Physics      |                 1 |
+|        103 | Chemistry    |                 1 |
+|        104 | English      |                 1 |
+|        105 | Marathi      |                 1 |
+|        106 | Hindi        |                 1 |
++------------+--------------+-------------------+
+6 rows in set (0.00 sec)
+
+mysql> select *from subject;
++------------+--------------+-------------+
+| subject_id | subject_name | total_marks |
++------------+--------------+-------------+
+|        101 | Mathematics  |         100 |
+|        102 | Physics      |         100 |
+|        103 | Chemistry    |         100 |
+|        104 | English      |         100 |
+|        105 | Marathi      |          90 |
+|        106 | Hindi        |          80 |
++------------+--------------+-------------+
+6 rows in set (0.00 sec)
+
+mysql> select *from result;
++-----------+------------+---------+----------------+---------------+
+| result_id | student_id | exam_id | marks_obtained | result_status |
++-----------+------------+---------+----------------+---------------+
+|         1 |          1 |     201 |             85 | pass          |
+|         2 |          2 |     201 |             78 | Pass          |
+|         3 |          3 |     202 |             65 | Pass          |
+|         4 |          4 |     203 |             45 | Fail          |
+|         5 |          5 |     204 |             88 | Pass          |
+|         6 |          1 |     202 |             72 | Pass          |
+|         7 |          2 |     203 |             90 | Pass          |
++-----------+------------+---------+----------------+---------------+
+7 rows in set (0.00 sec)
+
+mysql> select *from ExamSchedule;
++---------+------------+------------+------------------+
+| exam_id | subject_id | exam_date  | duration_minutes |
++---------+------------+------------+------------------+
+|     201 |        101 | 2024-05-10 |              120 |
+|     202 |        102 | 2024-05-12 |              120 |
+|     203 |        103 | 2024-05-14 |              120 |
+|     204 |        104 | 2024-05-16 |               90 |
++---------+------------+------------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> select sb.subject_name,sb.subject_id from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by student_id having coun(student_id)>1;
+ERROR 1305 (42000): FUNCTION onlineexamdb.coun does not exist
+mysql> select sb.subject_name,sb.subject_id from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by student_id having count(student_id)>1;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'onlineexamdb.sb.subject_name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select sb.subject_name,sb.subject_id from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by r.student_id having count(r.student_id)>1;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'onlineexamdb.sb.subject_name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select sb.subject_name,sb.subject_id from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by r.student_id having count(r.student_id)>^C
+mysql> select sb.subject_name,sb.subject_id from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by subject_name having count(student_id)>1;
+ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'onlineexamdb.sb.subject_id' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select sb.subject_name,sb.subject_id from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by sb.subject_name having count(student_id)>1;
+ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'onlineexamdb.sb.subject_id' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select sb.subject_name,sb.subject_id from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by sb.subject_name,sb.subject_id having count(student_id)>1;
++--------------+------------+
+| subject_name | subject_id |
++--------------+------------+
+| Mathematics  |        101 |
+| Physics      |        102 |
+| Chemistry    |        103 |
++--------------+------------+
+3 rows in set (0.01 sec)
+
+mysql> select s.student_id,s.student_name,ex.exam_id,sb.subject_name,ex.exam_date,ex.duration_minutes from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on ex.subject_id=sb.subject_id;
+ERROR 1054 (42S22): Unknown column 'sb.subject_name' in 'field list'
+mysql> select s.student_id,s.student_name,ex.exam_id,sb.subject_name,ex.exam_date,ex.duration_minutes from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on ex.exam_id=r.exam_id inner join subject sb on sb.subject_id=ex.subject_id;
++------------+--------------+---------+--------------+------------+------------------+
+| student_id | student_name | exam_id | subject_name | exam_date  | duration_minutes |
++------------+--------------+---------+--------------+------------+------------------+
+|          1 | Rahul Sharma |     201 | Mathematics  | 2024-05-10 |              120 |
+|          2 | Priya Mehta  |     201 | Mathematics  | 2024-05-10 |              120 |
+|          3 | Amit Verma   |     202 | Physics      | 2024-05-12 |              120 |
+|          1 | Rahul Sharma |     202 | Physics      | 2024-05-12 |              120 |
+|          4 | Sneha Reddy  |     203 | Chemistry    | 2024-05-14 |              120 |
+|          2 | Priya Mehta  |     203 | Chemistry    | 2024-05-14 |              120 |
+|          5 | Arjun Singh  |     204 | English      | 2024-05-16 |               90 |
++------------+--------------+---------+--------------+------------+------------------+
+7 rows in set (0.00 sec)
+
+mysql> select s.student_id,s.student_name,ex.exam_id,sb.subject_name,ex.exam_date,ex.duration_minutes from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on ex.exam_id=r.exam_id inner join subject sb on sb.subject_id=ex.subject_id where exam_date between '2024-05-10' and '2024-05-14';
++------------+--------------+---------+--------------+------------+------------------+
+| student_id | student_name | exam_id | subject_name | exam_date  | duration_minutes |
++------------+--------------+---------+--------------+------------+------------------+
+|          1 | Rahul Sharma |     201 | Mathematics  | 2024-05-10 |              120 |
+|          2 | Priya Mehta  |     201 | Mathematics  | 2024-05-10 |              120 |
+|          3 | Amit Verma   |     202 | Physics      | 2024-05-12 |              120 |
+|          1 | Rahul Sharma |     202 | Physics      | 2024-05-12 |              120 |
+|          4 | Sneha Reddy  |     203 | Chemistry    | 2024-05-14 |              120 |
+|          2 | Priya Mehta  |     203 | Chemistry    | 2024-05-14 |              120 |
++------------+--------------+---------+--------------+------------+------------------+
+6 rows in set (0.01 sec)
+
+mysql> select s.student_name,r.marks_obtained from student s inner join result r on s.student_id=r.student_id;
++--------------+----------------+
+| student_name | marks_obtained |
++--------------+----------------+
+| Rahul Sharma |             85 |
+| Priya Mehta  |             78 |
+| Amit Verma   |             65 |
+| Sneha Reddy  |             45 |
+| Arjun Singh  |             88 |
+| Rahul Sharma |             72 |
+| Priya Mehta  |             90 |
++--------------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> select s.student_name,r.marks_obtained from student s inner join result r on s.student_id=r.student_id group by r.student_name;
+ERROR 1054 (42S22): Unknown column 'r.student_name' in 'group statement'
+mysql> select s.student_name,r.marks_obtained from student s inner join result r on s.student_id=r.student_id group by s.student_name;
+ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'onlineexamdb.r.marks_obtained' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select s.student_name,r.marks_obtained from student s inner join result r on s.student_id=r.student_id;
++--------------+----------------+
+| student_name | marks_obtained |
++--------------+----------------+
+| Rahul Sharma |             85 |
+| Priya Mehta  |             78 |
+| Amit Verma   |             65 |
+| Sneha Reddy  |             45 |
+| Arjun Singh  |             88 |
+| Rahul Sharma |             72 |
+| Priya Mehta  |             90 |
++--------------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> select s.student_name,sum(r.marks_obtained) from student s inner join result r on s.student_id=r.student_id group by s.student_name;
++--------------+-----------------------+
+| student_name | sum(r.marks_obtained) |
++--------------+-----------------------+
+| Rahul Sharma |                   157 |
+| Priya Mehta  |                   168 |
+| Amit Verma   |                    65 |
+| Sneha Reddy  |                    45 |
+| Arjun Singh  |                    88 |
++--------------+-----------------------+
+5 rows in set (0.00 sec)
+
+mysql> select *from student;
++------------+----------------+------------------+--------+-----------+-------------------+
+| student_id | student_name   | email            | gender | city      | registration_date |
++------------+----------------+------------------+--------+-----------+-------------------+
+|          1 | Rahul Sharma   | rahul@gmail.com  | Male   | Delhi     | 2024-01-10        |
+|          2 | Priya Mehta    | priya@gmail.com  | Female | Mumbai    | 2024-02-15        |
+|          3 | Amit Verma     | amit@gmail.com   | Male   | Bangalore | 2024-03-05        |
+|          4 | Sneha Reddy    | sneha@gmail.com  | Female | Hyderabad | 2024-01-20        |
+|          5 | Arjun Singh    | arjun@gmail.com  | Male   | Chennai   | 2024-02-01        |
+|          6 | sima jadhav    | sima@gmail.com   | Female | New York  | 2024-03-01        |
+|          7 | sneha pawar    | NULL             | Female | Pune      | 2024-09-09        |
+|         11 | Reshma dhawale | reshma@gmail.com | Female | Delhi     | 2024-01-05        |
++------------+----------------+------------------+--------+-----------+-------------------+
+8 rows in set (0.00 sec)
+
+mysql> select *from question;
++-------------+----------------------------------------------+------------------+-------+
+| question_id | question_text                                | difficulty_level | marks |
++-------------+----------------------------------------------+------------------+-------+
+|           1 | What is 2 + 2?                               | Easy             |     5 |
+|           2 | Explain Newton?s First Law.                  | Medium           |    10 |
+|           3 | Balance the chemical equation H2 + O2 ? H2O. | Medium           |    10 |
+|           4 | Write an essay on Climate Change.            | Hard             |    15 |
+|           5 | Integrate x^2 dx.                            | Hard             |    15 |
++-------------+----------------------------------------------+------------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select *from result;
++-----------+------------+---------+----------------+---------------+
+| result_id | student_id | exam_id | marks_obtained | result_status |
++-----------+------------+---------+----------------+---------------+
+|         1 |          1 |     201 |             85 | pass          |
+|         2 |          2 |     201 |             78 | Pass          |
+|         3 |          3 |     202 |             65 | Pass          |
+|         4 |          4 |     203 |             45 | Fail          |
+|         5 |          5 |     204 |             88 | Pass          |
+|         6 |          1 |     202 |             72 | Pass          |
+|         7 |          2 |     203 |             90 | Pass          |
++-----------+------------+---------+----------------+---------------+
+7 rows in set (0.00 sec)
+
+mysql> select *from ExamSchedule;
++---------+------------+------------+------------------+
+| exam_id | subject_id | exam_date  | duration_minutes |
++---------+------------+------------+------------------+
+|     201 |        101 | 2024-05-10 |              120 |
+|     202 |        102 | 2024-05-12 |              120 |
+|     203 |        103 | 2024-05-14 |              120 |
+|     204 |        104 | 2024-05-16 |               90 |
++---------+------------+------------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> select *from subject;
++------------+--------------+-------------+
+| subject_id | subject_name | total_marks |
++------------+--------------+-------------+
+|        101 | Mathematics  |         100 |
+|        102 | Physics      |         100 |
+|        103 | Chemistry    |         100 |
+|        104 | English      |         100 |
+|        105 | Marathi      |          90 |
+|        106 | Hindi        |          80 |
++------------+--------------+-------------+
+6 rows in set (0.00 sec)
+
+mysql> select *from subjectQuestion;
++------------+-------------+
+| subject_id | question_id |
++------------+-------------+
+|        101 |           1 |
+|        102 |           2 |
+|        103 |           3 |
+|        104 |           4 |
+|        101 |           5 |
++------------+-------------+
+5 rows in set (0.01 sec)
+
+mysql> select sb.subject_name from subject inner join subjectQuestion sq on sb.sub_id=sq.sub_id inner join question q on sq.question_id=q.question_id;
+ERROR 1054 (42S22): Unknown column 'sb.subject_name' in 'field list'
+mysql> select sb.subject_name from subject sb inner join subjectQuestion sq on sb.sub_id=sq.sub_id inner join question q on sq.question_id=q.question_id;
+ERROR 1054 (42S22): Unknown column 'sb.sub_id' in 'on clause'
+mysql> select sb.subject_name from subject sb inner join subjectQuestion sq on sb.subject_id=sq.sub_id inner join question q on sq.question_id=q.question_id;
+ERROR 1054 (42S22): Unknown column 'sq.sub_id' in 'on clause'
+mysql> select sb.subject_name from subject sb inner join subjectQuestion sq on sb.subject_id=sq.subject_id inner join question q on sq.question_id=q.question_id;
++--------------+
+| subject_name |
++--------------+
+| Mathematics  |
+| Physics      |
+| Chemistry    |
+| English      |
+| Mathematics  |
++--------------+
+5 rows in set (0.03 sec)
+
+mysql> select sb.subject_name from subject sb inner join subjectQuestion sq on sb.subject_id=sq.subject_id inner join question q on sq.question_id=q.question_id where q.difficulty_level="hard";
++--------------+
+| subject_name |
++--------------+
+| English      |
+| Mathematics  |
++--------------+
+2 rows in set (0.01 sec)
+
+mysql> select sb.subject_name,q.question_text,q.difficulty_level from subject sb inner join subjectQuestion sq on sb.subject_id=sq.subject_id inner join question q on sq.question_id=q.question_id where q.difficulty_level="hard";
++--------------+-----------------------------------+------------------+
+| subject_name | question_text                     | difficulty_level |
++--------------+-----------------------------------+------------------+
+| English      | Write an essay on Climate Change. | Hard             |
+| Mathematics  | Integrate x^2 dx.                 | Hard             |
++--------------+-----------------------------------+------------------+
+2 rows in set (0.00 sec)
+
+mysql> select *from student s inner join result r on s.student_id=r.student_id where r.result_status="pass";
++------------+--------------+-----------------+--------+-----------+-------------------+-----------+------------+---------+----------------+---------------+
+| student_id | student_name | email           | gender | city      | registration_date | result_id | student_id | exam_id | marks_obtained | result_status |
++------------+--------------+-----------------+--------+-----------+-------------------+-----------+------------+---------+----------------+---------------+
+|          1 | Rahul Sharma | rahul@gmail.com | Male   | Delhi     | 2024-01-10        |         1 |          1 |     201 |             85 | pass          |
+|          2 | Priya Mehta  | priya@gmail.com | Female | Mumbai    | 2024-02-15        |         2 |          2 |     201 |             78 | Pass          |
+|          3 | Amit Verma   | amit@gmail.com  | Male   | Bangalore | 2024-03-05        |         3 |          3 |     202 |             65 | Pass          |
+|          5 | Arjun Singh  | arjun@gmail.com | Male   | Chennai   | 2024-02-01        |         5 |          5 |     204 |             88 | Pass          |
+|          1 | Rahul Sharma | rahul@gmail.com | Male   | Delhi     | 2024-01-10        |         6 |          1 |     202 |             72 | Pass          |
+|          2 | Priya Mehta  | priya@gmail.com | Female | Mumbai    | 2024-02-15        |         7 |          2 |     203 |             90 | Pass          |
++------------+--------------+-----------------+--------+-----------+-------------------+-----------+------------+---------+----------------+---------------+
+6 rows in set (0.01 sec)
+
+mysql> select distinct *from student s inner join result r on s.student_id=r.student_id where r.result_status="pass";
++------------+--------------+-----------------+--------+-----------+-------------------+-----------+------------+---------+----------------+---------------+
+| student_id | student_name | email           | gender | city      | registration_date | result_id | student_id | exam_id | marks_obtained | result_status |
++------------+--------------+-----------------+--------+-----------+-------------------+-----------+------------+---------+----------------+---------------+
+|          1 | Rahul Sharma | rahul@gmail.com | Male   | Delhi     | 2024-01-10        |         1 |          1 |     201 |             85 | pass          |
+|          2 | Priya Mehta  | priya@gmail.com | Female | Mumbai    | 2024-02-15        |         2 |          2 |     201 |             78 | Pass          |
+|          3 | Amit Verma   | amit@gmail.com  | Male   | Bangalore | 2024-03-05        |         3 |          3 |     202 |             65 | Pass          |
+|          5 | Arjun Singh  | arjun@gmail.com | Male   | Chennai   | 2024-02-01        |         5 |          5 |     204 |             88 | Pass          |
+|          1 | Rahul Sharma | rahul@gmail.com | Male   | Delhi     | 2024-01-10        |         6 |          1 |     202 |             72 | Pass          |
+|          2 | Priya Mehta  | priya@gmail.com | Female | Mumbai    | 2024-02-15        |         7 |          2 |     203 |             90 | Pass          |
++------------+--------------+-----------------+--------+-----------+-------------------+-----------+------------+---------+----------------+---------------+
+6 rows in set (0.01 sec)
+
+mysql> select distinct(student_id),*from student s inner join result r on s.student_id=r.student_id where r.result_status="pass";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '*from student s inner join result r on s.student_id=r.student_id where r.result_' at line 1
+mysql> select distinct(student_id),s.student_name,s.email,s.gender,s.city from student s inner join result r on s.student_id=r.student_id where r.result_status="pass";
+ERROR 1052 (23000): Column 'student_id' in field list is ambiguous
+mysql> select distinct s.student_id,s.student_name,s.email,s.gender,s.city from student s inner join result r on s.student_id=r.student_id where r.result_status="pass";
++------------+--------------+-----------------+--------+-----------+
+| student_id | student_name | email           | gender | city      |
++------------+--------------+-----------------+--------+-----------+
+|          1 | Rahul Sharma | rahul@gmail.com | Male   | Delhi     |
+|          2 | Priya Mehta  | priya@gmail.com | Female | Mumbai    |
+|          3 | Amit Verma   | amit@gmail.com  | Male   | Bangalore |
+|          5 | Arjun Singh  | arjun@gmail.com | Male   | Chennai   |
++------------+--------------+-----------------+--------+-----------+
+4 rows in set (0.01 sec)
+
+mysql> select distinct s.student_id,s.student_name,s.email,s.gender,s.city,r.result_status from student s inner join result r on s.student_id=r.student_id where r.result_status="pass";
++------------+--------------+-----------------+--------+-----------+---------------+
+| student_id | student_name | email           | gender | city      | result_status |
++------------+--------------+-----------------+--------+-----------+---------------+
+|          1 | Rahul Sharma | rahul@gmail.com | Male   | Delhi     | pass          |
+|          2 | Priya Mehta  | priya@gmail.com | Female | Mumbai    | Pass          |
+|          3 | Amit Verma   | amit@gmail.com  | Male   | Bangalore | Pass          |
+|          5 | Arjun Singh  | arjun@gmail.com | Male   | Chennai   | Pass          |
++------------+--------------+-----------------+--------+-----------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> select distinct s.student_id,s.student_name,s.email,s.gender,s.city,r.result_status from student s inner join result r on s.student_id=r.student_id where r.result_status="fail";
++------------+--------------+-----------------+--------+-----------+---------------+
+| student_id | student_name | email           | gender | city      | result_status |
++------------+--------------+-----------------+--------+-----------+---------------+
+|          4 | Sneha Reddy  | sneha@gmail.com | Female | Hyderabad | Fail          |
++------------+--------------+-----------------+--------+-----------+---------------+
+1 row in set (0.00 sec)
+
+mysql> select sb.subject_id,sb.subject_name,ex.duration_minutes as Exam_Duration from ExamSchedule ex innner join on subject s on ex.subject_id=s.subject_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'innner join on subject s on ex.subject_id=s.subject_id' at line 1
+mysql> select sb.subject_id,sb.subject_name,ex.duration_minutes as Exam_Duration from ExamSchedule ex innner join on subject s on ex.subject_id=sb.subject_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'innner join on subject s on ex.subject_id=sb.subject_id' at line 1
+mysql> select sb.subject_id,sb.subject_name,ex.duration_minutes as Exam_Duration from ExamSchedule ex innner join subject s on ex.subject_id=sb.subject_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'innner join subject s on ex.subject_id=sb.subject_id' at line 1
+mysql> select sb.subject_id,sb.subject_name,ex.duration_minutes as Exam_Duration from ExamSchedule ex innner join subject sb on ex.subject_id=sb.subject_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'innner join subject sb on ex.subject_id=sb.subject_id' at line 1
+mysql> select s.subject_id,s.subject_name,ex.duration_minutes as Exam_duration from ExamSchedule ex inner join subject s on ex.subject_id=s.subject_id;
++------------+--------------+---------------+
+| subject_id | subject_name | Exam_duration |
++------------+--------------+---------------+
+|        101 | Mathematics  |           120 |
+|        102 | Physics      |           120 |
+|        103 | Chemistry    |           120 |
+|        104 | English      |            90 |
++------------+--------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> select s.student_id,s.student_name,s.city from student s inner join result r on s.student_id=r.student_id;
++------------+--------------+-----------+
+| student_id | student_name | city      |
++------------+--------------+-----------+
+|          1 | Rahul Sharma | Delhi     |
+|          1 | Rahul Sharma | Delhi     |
+|          2 | Priya Mehta  | Mumbai    |
+|          2 | Priya Mehta  | Mumbai    |
+|          3 | Amit Verma   | Bangalore |
+|          4 | Sneha Reddy  | Hyderabad |
+|          5 | Arjun Singh  | Chennai   |
++------------+--------------+-----------+
+7 rows in set (0.00 sec)
+
+mysql> select s.student_id,s.student_name,s.city from student s left join result r on s.student_id=r.student_id;
++------------+----------------+-----------+
+| student_id | student_name   | city      |
++------------+----------------+-----------+
+|          1 | Rahul Sharma   | Delhi     |
+|          1 | Rahul Sharma   | Delhi     |
+|          2 | Priya Mehta    | Mumbai    |
+|          2 | Priya Mehta    | Mumbai    |
+|          3 | Amit Verma     | Bangalore |
+|          4 | Sneha Reddy    | Hyderabad |
+|          5 | Arjun Singh    | Chennai   |
+|          6 | sima jadhav    | New York  |
+|          7 | sneha pawar    | Pune      |
+|         11 | Reshma dhawale | Delhi     |
++------------+----------------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> select s.student_id,s.student_name,s.city from student s left join result r on s.student_id=r.student_id left join ExamSchedule ex on r.exam_id=ex.exam_id;
++------------+----------------+-----------+
+| student_id | student_name   | city      |
++------------+----------------+-----------+
+|          1 | Rahul Sharma   | Delhi     |
+|          1 | Rahul Sharma   | Delhi     |
+|          2 | Priya Mehta    | Mumbai    |
+|          2 | Priya Mehta    | Mumbai    |
+|          3 | Amit Verma     | Bangalore |
+|          4 | Sneha Reddy    | Hyderabad |
+|          5 | Arjun Singh    | Chennai   |
+|          6 | sima jadhav    | New York  |
+|          7 | sneha pawar    | Pune      |
+|         11 | Reshma dhawale | Delhi     |
++------------+----------------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> select s.student_id,s.student_name,s.city from student s left join result r on s.student_id=r.student_id left join ExamSchedule ex on r.exam_id=ex.exam_id where city="New York";
++------------+--------------+----------+
+| student_id | student_name | city     |
++------------+--------------+----------+
+|          6 | sima jadhav  | New York |
++------------+--------------+----------+
+1 row in set (0.00 sec)
+
+mysql> select s.subject_id,s.subject_name,count(question_id) from subject s inner join subjectQuestion sq on s.subject_id=sq.subject_id inner join question q on sq.question_id=q.question_id;
+ERROR 1052 (23000): Column 'question_id' in field list is ambiguous
+mysql> select s.subject_id,s.subject_name,count(q.question_id) from subject s inner join subjectQuestion sq on s.subject_id=sq.subject_id inner join question q on sq.question_id=q.question_id;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'onlineexamdb.s.subject_id'; this is incompatible with sql_mode=only_full_group_by
+mysql> select s.subject_id,s.subject_name,count(q.question_id) from subject s inner join subjectQuestion sq on s.subject_id=sq.subject_id inner join question q on sq.question_id=q.question_id group by subject_id,subject_name;
++------------+--------------+----------------------+
+| subject_id | subject_name | count(q.question_id) |
++------------+--------------+----------------------+
+|        101 | Mathematics  |                    2 |
+|        102 | Physics      |                    1 |
+|        103 | Chemistry    |                    1 |
+|        104 | English      |                    1 |
++------------+--------------+----------------------+
+4 rows in set (0.01 sec)
+
+mysql> select s.subject_id,s.subject_name,count(q.question_id) as question_per_sub from subject s inner join subjectQuestion sq on s.subject_id=sq.subject_id inner join question q on sq.question_id=q.question_id group by subject_id,subject_name;
++------------+--------------+------------------+
+| subject_id | subject_name | question_per_sub |
++------------+--------------+------------------+
+|        101 | Mathematics  |                2 |
+|        102 | Physics      |                1 |
+|        103 | Chemistry    |                1 |
+|        104 | English      |                1 |
++------------+--------------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> select s.student_id,s.student_name,count(r.student_id) from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex r.exam_id=ex.exam_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'r.exam_id=ex.exam_id' at line 1
+mysql> select s.student_id,s.student_name,count(r.student_id) from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex r.exam_id=ex.exam_id group by s.student_id,s.student_name;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'r.exam_id=ex.exam_id group by s.student_id,s.student_name' at line 1
+mysql> select s.student_id,s.student_name,count(r.student_id) from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id group by s.student_id,s.student_name;
++------------+--------------+---------------------+
+| student_id | student_name | count(r.student_id) |
++------------+--------------+---------------------+
+|          1 | Rahul Sharma |                   2 |
+|          2 | Priya Mehta  |                   2 |
+|          3 | Amit Verma   |                   1 |
+|          4 | Sneha Reddy  |                   1 |
+|          5 | Arjun Singh  |                   1 |
++------------+--------------+---------------------+
+5 rows in set (0.05 sec)
+
+mysql> select s.student_id,s.student_name,count(r.student_id) from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id group by s.student_id,s.student_name having count(student_id)>1;
+ERROR 1052 (23000): Column 'student_id' in having clause is ambiguous
+mysql> select s.student_id,s.student_name,count(r.student_id) from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id group by s.student_id,s.student_name having count(s.student_id)>1;
++------------+--------------+---------------------+
+| student_id | student_name | count(r.student_id) |
++------------+--------------+---------------------+
+|          1 | Rahul Sharma |                   2 |
+|          2 | Priya Mehta  |                   2 |
++------------+--------------+---------------------+
+2 rows in set (0.01 sec)
+
+mysql> select avg(marks) from question;
++------------+
+| avg(marks) |
++------------+
+|    11.0000 |
++------------+
+1 row in set (0.01 sec)
+
+mysql> select s.student id,s.student_name,AVG(r.obtained_marks) from student s inner join result r on s.student_id=r.student_id group by s.student_id;
+ERROR 1054 (42S22): Unknown column 's.student' in 'field list'
+mysql> select s.student_id,s.student_name,AVG(r.obtained_marks) from student s inner join result r on s.student_id=r.student_id group by s.student_id,s.student_name;
+ERROR 1054 (42S22): Unknown column 'r.obtained_marks' in 'field list'
+mysql> select s.student_id,s.student_name,AVG(r.marks_obtained) from student s inner join result r on s.student_id=r.student_id group by s.student_id,s.student_name;
++------------+--------------+-----------------------+
+| student_id | student_name | AVG(r.marks_obtained) |
++------------+--------------+-----------------------+
+|          1 | Rahul Sharma |               78.5000 |
+|          2 | Priya Mehta  |               84.0000 |
+|          3 | Amit Verma   |               65.0000 |
+|          4 | Sneha Reddy  |               45.0000 |
+|          5 | Arjun Singh  |               88.0000 |
++------------+--------------+-----------------------+
+5 rows in set (0.00 sec)
+
+mysql> select s.student_id,s.student_name,AVG(r.marks_obtained) from student s inner join result r on s.student_id=r.student_id group by s.student_id,s.student_name having Avg(marks_obtained)>60;
++------------+--------------+-----------------------+
+| student_id | student_name | AVG(r.marks_obtained) |
++------------+--------------+-----------------------+
+|          1 | Rahul Sharma |               78.5000 |
+|          2 | Priya Mehta  |               84.0000 |
+|          3 | Amit Verma   |               65.0000 |
+|          5 | Arjun Singh  |               88.0000 |
++------------+--------------+-----------------------+
+4 rows in set (0.00 sec)
+
+mysql> select s.subject_id,s.subject_name,q.difficulty_level from subject s inner join subjectQuestion sq on s.subject_id=sq.subject_id inner join question q on sq.question_id=q.question_id where difficulty_level="easy";
++------------+--------------+------------------+
+| subject_id | subject_name | difficulty_level |
++------------+--------------+------------------+
+|        101 | Mathematics  | Easy             |
++------------+--------------+------------------+
+1 row in set (0.01 sec)
+
+mysql> select s.students_name,sb.subject_name,count(ex.exam_id) from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by student_id;
+ERROR 1054 (42S22): Unknown column 's.students_name' in 'field list'
+mysql> select s.student_name,sb.subject_name,count(ex.exam_id) from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by student_id;
+ERROR 1052 (23000): Column 'student_id' in group statement is ambiguous
+mysql> select s.student_name,sb.subject_name,count(ex.exam_id) from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by s.student_id;
+ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'onlineexamdb.sb.subject_name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select s.student_name,sb.subject_name,count(ex.exam_id) from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by s.student_id,s.student_name;
+ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'onlineexamdb.sb.subject_name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select s.student_name,sb.subject_name,count(ex.exam_id) from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by s.student_name,sb.subject_name;
++--------------+--------------+-------------------+
+| student_name | subject_name | count(ex.exam_id) |
++--------------+--------------+-------------------+
+| Rahul Sharma | Mathematics  |                 1 |
+| Priya Mehta  | Mathematics  |                 1 |
+| Amit Verma   | Physics      |                 1 |
+| Rahul Sharma | Physics      |                 1 |
+| Sneha Reddy  | Chemistry    |                 1 |
+| Priya Mehta  | Chemistry    |                 1 |
+| Arjun Singh  | English      |                 1 |
++--------------+--------------+-------------------+
+7 rows in set (0.01 sec)
+
+mysql> select sb.subject_name,max(r.obtained_marks) from result r inner join ExamSchedule sx on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by sb.subject_name;
+ERROR 1054 (42S22): Unknown column 'r.obtained_marks' in 'field list'
+mysql> select sb.subject_name,max(r.marks_obtained) from result r inner join ExamSchedule sx on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by sb.subject_name;
+ERROR 1054 (42S22): Unknown column 'ex.subject_id' in 'on clause'
+mysql> select sb.subject_name,max(r.marks_obtained) from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by sb.subject_name;
++--------------+-----------------------+
+| subject_name | max(r.marks_obtained) |
++--------------+-----------------------+
+| Mathematics  |                    85 |
+| Physics      |                    72 |
+| Chemistry    |                    90 |
+| English      |                    88 |
++--------------+-----------------------+
+4 rows in set (0.01 sec)
+
+mysql> select sb.subject_name,min(r.marks_obtained) from result r inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id group by sb.subject_name;
++--------------+-----------------------+
+| subject_name | min(r.marks_obtained) |
++--------------+-----------------------+
+| Mathematics  |                    78 |
+| Physics      |                    65 |
+| Chemistry    |                    45 |
+| English      |                    88 |
++--------------+-----------------------+
+4 rows in set (0.01 sec)
+
+mysql> select s.student_id,s.student_name,sb.subject_name from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id where sb.subject_name="%Math%";
+Empty set (0.01 sec)
+
+mysql> select *from subject;
++------------+--------------+-------------+
+| subject_id | subject_name | total_marks |
++------------+--------------+-------------+
+|        101 | Mathematics  |         100 |
+|        102 | Physics      |         100 |
+|        103 | Chemistry    |         100 |
+|        104 | English      |         100 |
+|        105 | Marathi      |          90 |
+|        106 | Hindi        |          80 |
++------------+--------------+-------------+
+6 rows in set (0.01 sec)
+
+mysql> select s.student_id,s.student_name,sb.subject_name from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id where sb.subject_name="Math%";
+Empty set (0.01 sec)
+
+mysql> select s.student_id,s.student_name,sb.subject_name from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on ex.subject_id=sb.subject_id where sb.subject_name like "Math%";
++------------+--------------+--------------+
+| student_id | student_name | subject_name |
++------------+--------------+--------------+
+|          1 | Rahul Sharma | Mathematics  |
+|          2 | Priya Mehta  | Mathematics  |
++------------+--------------+--------------+
+2 rows in set (0.01 sec)
+
+mysql> select count(s.student_id),s.gender as gender from student s inner join result r on s.student_id=r.student_id group by s.gender;
++---------------------+--------+
+| count(s.student_id) | gender |
++---------------------+--------+
+|                   4 | Male   |
+|                   3 | Female |
++---------------------+--------+
+2 rows in set (0.01 sec)
+
+mysql> select s.gender as gender,count(s.student_id) as count_student_id from student s inner join result r on s.student_id=r.student_id group by s.gender;
++--------+------------------+
+| gender | count_student_id |
++--------+------------------+
+| Male   |                4 |
+| Female |                3 |
++--------+------------------+
+2 rows in set (0.01 sec)
+
+mysql> select s.gender as gender,count(s.student_id) as count_student_id from student s left join result r on s.student_id=r.student_id group by s.gender;
++--------+------------------+
+| gender | count_student_id |
++--------+------------------+
+| Male   |                4 |
+| Female |                6 |
++--------+------------------+
+2 rows in set (0.01 sec)
+
+mysql> update ExamSchedule set date="2025-03-02" where exam_id=104;
+ERROR 1054 (42S22): Unknown column 'date' in 'field list'
+mysql> update ExamSchedule set exam_data="2025-03-02" where exam_id=104;
+ERROR 1054 (42S22): Unknown column 'exam_data' in 'field list'
+mysql> update ExamSchedule set exam_date="2025-03-02" where exam_id=104;
+Query OK, 0 rows affected (0.02 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> select s.student_name,ex.exam_date from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_date=ex.exam_date where exam_date>'2025-01-01';
+ERROR 1054 (42S22): Unknown column 'r.exam_date' in 'on clause'
+mysql> select s.student_name,ex.exam_date from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id where exam_date>'2025-01-01';
+Empty set (0.01 sec)
+
+mysql> select s.student_name,ex.exam_date from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id where year(e.exam_date=2025);
+ERROR 1054 (42S22): Unknown column 'e.exam_date' in 'where clause'
+mysql> select s.student_name,ex.exam_date from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id where year(ex.exam_date=2025);
+Empty set, 1 warning (0.01 sec)
+
+mysql> select s.student_name,ex.exam_date from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id where year(ex.exam_date)=2015;
+Empty set (0.01 sec)
+
+mysql> select s.student_name,ex.exam_date from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id where month(ex.exam_date)=2015;
+Empty set (0.01 sec)
+
+mysql> select s.student_name,sb.subject_name,sb.total_marks from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on sb.subject_id=ex.subject_id;
++--------------+--------------+-------------+
+| student_name | subject_name | total_marks |
++--------------+--------------+-------------+
+| Rahul Sharma | Mathematics  |         100 |
+| Priya Mehta  | Mathematics  |         100 |
+| Amit Verma   | Physics      |         100 |
+| Rahul Sharma | Physics      |         100 |
+| Sneha Reddy  | Chemistry    |         100 |
+| Priya Mehta  | Chemistry    |         100 |
+| Arjun Singh  | English      |         100 |
++--------------+--------------+-------------+
+7 rows in set (0.01 sec)
+
+mysql> select s.student_name,sb.subject_name,sb.total_marks from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on sb.subject_id=ex.subject_id order by desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc' at line 1
+mysql> select s.student_name,sb.subject_name,sb.total_marks from student s inner join result r on s.student_id=r.student_id order by desc inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on sb.subject_id=ex.subject_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on' at line 1
+mysql> select s.student_name,sb.subject_name,sb.total_marks from student s inner join result r on s.student_id=r.student_id inner join ExamSchedule ex on r.exam_id=ex.exam_id inner join subject sb on sb.subject_id=ex.subject_id;
+
+
+Students Who Passed More Than 1 Exam
+
+
+.Students From Chicago Who Passed
+mysql> select distinct s.student_id,s.student_name,s.city,r.result_status from student s inner join result r on s.student_id=r.student_id where city="Delhi";
++------------+--------------+-------+---------------+
+| student_id | student_name | city  | result_status |
++------------+--------------+-------+---------------+
+|          1 | Rahul Sharma | Delhi | pass          |
++------------+--------------+-------+---------------+
+1 row in set (0.00 sec)
+
+
+mysql> select s.student_name,count(r.student_id) from student s inner join result r on s.student_id=r.student_id group by result_status,s.student_name having r.result_status="pass";
++--------------+---------------------+
+| student_name | count(r.student_id) |
++--------------+---------------------+
+| Rahul Sharma |                   2 |
+| Priya Mehta  |                   2 |
+| Amit Verma   |                   1 |
+| Arjun Singh  |                   1 |
++--------------+---------------------+
+4 rows in set (0.02 sec)
+
+mysql> select s.student_name,count(r.student_id) from student s inner join result r on s.student_id=r.student_id where result_status="pass" group by result_status,s.student_name having count(r.student_id)>1;
++--------------+---------------------+
+| student_name | count(r.student_id) |
++--------------+---------------------+
+| Rahul Sharma |                   2 |
+| Priya Mehta  |                   2 |
++--------------+---------------------+
+2 rows in set (0.00 sec)
+
+mysql> select s.student_id,s.student_name,r.marks_obtained from student s left join result r on s.student_id=r.student_id order by r.marks_obtained;
++------------+----------------+----------------+
+| student_id | student_name   | marks_obtained |
++------------+----------------+----------------+
+|          6 | sima jadhav    |           NULL |
+|          7 | sneha pawar    |           NULL |
+|         11 | Reshma dhawale |           NULL |
+|          4 | Sneha Reddy    |             45 |
+|          3 | Amit Verma     |             65 |
+|          1 | Rahul Sharma   |             72 |
+|          2 | Priya Mehta    |             78 |
+|          1 | Rahul Sharma   |             85 |
+|          5 | Arjun Singh    |             88 |
+|          2 | Priya Mehta    |             90 |
++------------+----------------+----------------+
+10 rows in set (0.01 sec)
+
+mysql> select s.student_id,s.student_name,r.marks_obtained from student s inner join result r on s.student_id=r.student_id order by r.marks_obtained desc;
++------------+--------------+----------------+
+| student_id | student_name | marks_obtained |
++------------+--------------+----------------+
+|          2 | Priya Mehta  |             90 |
+|          5 | Arjun Singh  |             88 |
+|          1 | Rahul Sharma |             85 |
+|          2 | Priya Mehta  |             78 |
+|          1 | Rahul Sharma |             72 |
+|          3 | Amit Verma   |             65 |
+|          4 | Sneha Reddy  |             45 |
++------------+--------------+----------------+
+7 rows in set (0.01 sec)
+
+mysql> select sb.subject_id,sb.subject_name,ex.duration_minutes as exam_duration from subject sb inner join ExamSchedule ex on sb.subject_id=ex.subject_id where ex.duration_minutes>90;
++------------+--------------+---------------+
+| subject_id | subject_name | exam_duration |
++------------+--------------+---------------+
+|        101 | Mathematics  |           120 |
+|        102 | Physics      |           120 |
+|        103 | Chemistry    |           120 |
++------------+--------------+---------------+
+3 rows in set (0.04 sec)
+
+mysql> select s.student_id,s.student_name,s.city,r.result_status from student s inner join result r on s.student_id=r.student_id where city="Delhi";
++------------+--------------+-------+---------------+
+| student_id | student_name | city  | result_status |
++------------+--------------+-------+---------------+
+|          1 | Rahul Sharma | Delhi | pass          |
+|          1 | Rahul Sharma | Delhi | Pass          |
++------------+--------------+-------+---------------+
+2 rows in set (0.01 sec)
+
+mysql> select distinct s.student_id,s.student_name,s.city,r.result_status from student s inner join result r on s.student_id=r.student_id where city="Delhi";
++------------+--------------+-------+---------------+
+| student_id | student_name | city  | result_status |
++------------+--------------+-------+---------------+
+|          1 | Rahul Sharma | Delhi | pass          |
++------------+--------------+-------+---------------+
+1 row in set (0.00 sec)
+
+mysql> select count(question_id),question_text,difficulty_level from question group by question_id having difficulty_level="hard";
++--------------------+-----------------------------------+------------------+
+| count(question_id) | question_text                     | difficulty_level |
++--------------------+-----------------------------------+------------------+
+|                  1 | Write an essay on Climate Change. | Hard             |
+|                  1 | Integrate x^2 dx.                 | Hard             |
+
+mysql>
