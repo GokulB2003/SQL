@@ -1,5 +1,6 @@
 
 //Joins
+cross Join-used to find the combinations
 Copyright (c) 2000, 2025, Oracle and/or its affiliates.
 
 Oracle is a registered trademark of Oracle Corporation and/or its

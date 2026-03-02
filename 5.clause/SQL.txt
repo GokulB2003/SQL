@@ -215,11 +215,7 @@ mysql> select emp_name from Employee where emp_name like "%a" or "%e" or "%i" or
 +-----------+
 2 rows in set, 4 warnings (0.01 sec)
 
-mysql> select *from Employee order by department asc then order by Salary desc
-    -> ;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'then order by Salary desc' at line 1
-mysql> select *from Employee order by department asc,order by Salary desc;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order by Salary desc' at line 1
+
 mysql> select *from Employee order by department asc,Salary desc;
 +--------+-----------+------------+----------+------------+
 | emp_id | emp_name  | department | Salary   | join_date  |
