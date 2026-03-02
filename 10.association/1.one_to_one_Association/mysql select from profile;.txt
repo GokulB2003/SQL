@@ -1,0 +1,51 @@
+mysql> select *from profile;
++-----+-------+--------+
+| pid | pname | userId |
++-----+-------+--------+
+|   1 | pinki |      2 |
++-----+-------+--------+
+1 row in set (0.00 sec)
+
+mysql> update profile set userId=1 where pid=1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from profile;
++-----+-------+--------+
+| pid | pname | userId |
++-----+-------+--------+
+|   1 | pinki |      1 |
++-----+-------+--------+
+1 row in set (0.00 sec)
+
+mysql> insert into profile values(2,"sneha",2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from profile;
++-----+-------+--------+
+| pid | pname | userId |
++-----+-------+--------+
+|   1 | pinki |      1 |
+|   2 | sneha |      2 |
++-----+-------+--------+
+2 rows in set (0.00 sec)
+
+mysql> insert into profile values(3,"Tanvi",3);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`one_to_one`.`profile`, CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `users` (`userId`))
+mysql> select *from profile;
++-----+-------+--------+
+| pid | pname | userId |
++-----+-------+--------+
+|   1 | pinki |      1 |
+|   2 | sneha |      2 |
++-----+-------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select *from users;
++--------+------+
+| userId | name |
++--------+------+
+|      1 | ram  |
+|      2 | sham |
++--------+------+
+2 rows in set (0.00 sec)
