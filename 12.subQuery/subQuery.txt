@@ -1,0 +1,527 @@
+
+mysql> show databases;
++-----------------------+
+| Database              |
++-----------------------+
+| abc                   |
+| billing               |
+| college               |
+| composite_primary_key |
+| information_schema    |
+| j2025                 |
+| mock                  |
+| mydb                  |
+| mysql                 |
+| one_to_many           |
+| one_to_one            |
+| onlineexamdb          |
+| performance_schema    |
+| pp                    |
+| pp50                  |
+| practice              |
+| subquery              |
+| sys                   |
+| team                  |
+| temp                  |
+| voice_tasks           |
++-----------------------+
+21 rows in set (0.03 sec)
+
+mysql> use one_to_one;
+Database changed
+mysql> show tables;
++----------------------+
+| Tables_in_one_to_one |
++----------------------+
+| profile              |
+| users                |
++----------------------+
+2 rows in set (0.01 sec)
+
+mysql> select *from one_to_many;
+ERROR 1146 (42S02): Table 'one_to_one.one_to_many' doesn't exist
+mysql> use one_to_many;
+Database changed
+mysql> show tables;
++-----------------------+
+| Tables_in_one_to_many |
++-----------------------+
+| employee              |
+| empview               |
++-----------------------+
+2 rows in set (0.00 sec)
+
+mysql> select *from empview;
++-------+----------+
+| empId | emp_name |
++-------+----------+
+|     1 | ram      |
+|     2 | raju     |
+|     3 | pinku    |
+|     4 | Mangu    |
++-------+----------+
+4 rows in set (0.02 sec)
+
+mysql> delete from empview where empId=1;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from empview;
++-------+----------+
+| empId | emp_name |
++-------+----------+
+|     2 | raju     |
+|     3 | pinku    |
+|     4 | Mangu    |
++-------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select *from Employee;
++-------+----------+--------+
+| empId | emp_name | salary |
++-------+----------+--------+
+|     2 | raju     |   3000 |
+|     3 | pinku    |   4000 |
+|     4 | Mangu    |   5000 |
++-------+----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> update empview set emp_name="Manoj" where empId=2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from employee;
++-------+----------+--------+
+| empId | emp_name | salary |
++-------+----------+--------+
+|     2 | Manoj    |   3000 |
+|     3 | pinku    |   4000 |
+|     4 | Mangu    |   5000 |
++-------+----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select *from empview;
++-------+----------+
+| empId | emp_name |
++-------+----------+
+|     2 | Manoj    |
+|     3 | pinku    |
+|     4 | Mangu    |
++-------+----------+
+3 rows in set (0.00 sec)
+
+mysql> create or replace view empview as select empId,emp_name from empview;
+ERROR 1146 (42S02): Table 'one_to_many.empview' doesn't exist
+mysql> create or replace view empview as select empId,emp_name from Employee;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select *from empview;
++-------+----------+
+| empId | emp_name |
++-------+----------+
+|     2 | Manoj    |
+|     3 | pinku    |
+|     4 | Mangu    |
++-------+----------+
+3 rows in set (0.00 sec)
+
+mysql> alter table employee add column salary int after emp_name;
+ERROR 1060 (42S21): Duplicate column name 'salary'
+mysql> select *from Employee;
++-------+----------+--------+
+| empId | emp_name | salary |
++-------+----------+--------+
+|     2 | Manoj    |   3000 |
+|     3 | pinku    |   4000 |
+|     4 | Mangu    |   5000 |
++-------+----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select *from empview;
++-------+----------+
+| empId | emp_name |
++-------+----------+
+|     2 | Manoj    |
+|     3 | pinku    |
+|     4 | Mangu    |
++-------+----------+
+3 rows in set (0.00 sec)
+
+mysql> use subquery;
+Database changed
+mysql> show tables;
++--------------------+
+| Tables_in_subquery |
++--------------------+
+| department         |
+| employee           |
+| project            |
++--------------------+
+3 rows in set (0.01 sec)
+
+mysql> select *from Employee;
++--------+----------+---------+--------+-----------+
+| emp_id | emp_name | dept_id | salary | join_year |
++--------+----------+---------+--------+-----------+
+|      1 | Rahul    |       2 |  60000 |      2019 |
+|      2 | Priya    |       1 |  55000 |      2021 |
+|      3 | Amit     |       3 |  70000 |      2020 |
+|      4 | Sneha    |       2 |  80000 |      2018 |
+|      5 | Karan    |       4 |  50000 |      2022 |
+|      6 | Neha     |       3 |  45000 |      2021 |
+|      7 | Vikas    |       5 |  72000 |      2019 |
+|      8 | Anjali   |       1 |  65000 |      2020 |
+|      9 | Rohit    |       2 |  90000 |      2023 |
+|     10 | Pooja    |       4 |  62000 |      2017 |
+|     11 | Arjun    |       2 |  75000 |      2021 |
+|     12 | Meena    |       3 |  48000 |      2022 |
+|     13 | Sanjay   |       5 |  53000 |      2020 |
+|     14 | Kavita   |       1 |  68000 |      2019 |
++--------+----------+---------+--------+-----------+
+14 rows in set (0.04 sec)
+
+mysql> select *from department;
++---------+-----------+----------+
+| dept_id | dept_name | location |
++---------+-----------+----------+
+|       1 | HR        | Mumbai   |
+|       2 | IT        | Pune     |
+|       3 | Sales     | Delhi    |
+|       4 | Finance   | Mumbai   |
+|       5 | Marketing | Pune     |
+|       6 | Support   | Chennai  |
++---------+-----------+----------+
+6 rows in set (0.04 sec)
+
+mysql> select *from project;
++------------+-----------------------+--------+--------+
+| project_id | project_name          | emp_id | budget |
++------------+-----------------------+--------+--------+
+|        101 | ERP System            |      1 |  60000 |
+|        102 | Website Development   |      4 |  90000 |
+|        103 | Sales App             |      3 |  75000 |
+|        104 | Marketing Campaign    |      7 |  50000 |
+|        105 | Payroll System        |      2 |  45000 |
+|        106 | Inventory System      |      9 | 120000 |
+|        107 | Finance Tracker       |     10 |  85000 |
+|        108 | Customer Support Tool |     11 |  65000 |
++------------+-----------------------+--------+--------+
+8 rows in set (0.03 sec)
+
+mysql> select emp_id,emp_name from Employee where salary >(select Avg(salary from employee));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from employee))' at line 1
+mysql> select emp_id,emp_name from Employee where salary > (select Avg(salary) from Employee);
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      3 | Amit     |
+|      4 | Sneha    |
+|      7 | Vikas    |
+|      8 | Anjali   |
+|      9 | Rohit    |
+|     11 | Arjun    |
+|     14 | Kavita   |
++--------+----------+
+7 rows in set (0.01 sec)
+
+mysql> select emp_id,emp_name from employee e where emp_id in (select dept_name="HR" from department d where e.dept_id=d.dept_id);
+Empty set (0.00 sec)
+
+mysql> select emp_id,emp_name from employee where dept_id= (select dept_id from department where dept_name="HR");
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      2 | Priya    |
+|      8 | Anjali   |
+|     14 | Kavita   |
++--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select emp_id,emp_name,salary from Employee where salary>(select min(salary) from Employee);
++--------+----------+--------+
+| emp_id | emp_name | salary |
++--------+----------+--------+
+|      1 | Rahul    |  60000 |
+|      2 | Priya    |  55000 |
+|      3 | Amit     |  70000 |
+|      4 | Sneha    |  80000 |
+|      5 | Karan    |  50000 |
+|      7 | Vikas    |  72000 |
+|      8 | Anjali   |  65000 |
+|      9 | Rohit    |  90000 |
+|     10 | Pooja    |  62000 |
+|     11 | Arjun    |  75000 |
+|     12 | Meena    |  48000 |
+|     13 | Sanjay   |  53000 |
+|     14 | Kavita   |  68000 |
++--------+----------+--------+
+13 rows in set (0.00 sec)
+
+mysql> select emp_id,emp_name from Employee where dept_id=(select dept_id from department where location ="Delhi");
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      3 | Amit     |
+|      6 | Neha     |
+|     12 | Meena    |
++--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select emp_id,emp_name from Employee where dept_id=(select dept_id from department where location ="Mumbai");
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select emp_id,emp_name from Employee where dept_id exists(select dept_id from department where location ="Mumbai");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'exists(select dept_id from department where location ="Mumbai")' at line 1
+mysql> select emp_id,emp_name from Employee where dept_id in (select dept_id from department where location ="Mumbai");
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      2 | Priya    |
+|      8 | Anjali   |
+|     14 | Kavita   |
+|      5 | Karan    |
+|     10 | Pooja    |
++--------+----------+
+5 rows in set (0.00 sec)
+
+
+mysql> select emp_name,emp_id from Employee where salary=(select max(salary)from Employee);
++----------+--------+
+| emp_name | emp_id |
++----------+--------+
+| Rohit    |      9 |
++----------+--------+
+1 row in set (0.00 sec)
+
+mysql> select join_year from Employee where emp_id=3 and join_year=(select join_year from Employee);
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select join_year from Employee where emp_id=3 and join_year in (select join_year from Employee);
++-----------+
+| join_year |
++-----------+
+|      2020 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select join_year,emp_name from Employee where join_year in (select join_year from Employee);
++-----------+----------+
+| join_year | emp_name |
++-----------+----------+
+|      2019 | Rahul    |
+|      2021 | Priya    |
+|      2020 | Amit     |
+|      2018 | Sneha    |
+|      2022 | Karan    |
+|      2021 | Neha     |
+|      2019 | Vikas    |
+|      2020 | Anjali   |
+|      2023 | Rohit    |
+|      2017 | Pooja    |
+|      2021 | Arjun    |
+|      2022 | Meena    |
+|      2020 | Sanjay   |
+|      2019 | Kavita   |
++-----------+----------+
+14 rows in set (0.01 sec)
+
+mysql> select join_year from Employee where join_year= (select join_year from Employee where id=3);
+ERROR 1054 (42S22): Unknown column 'id' in 'where clause'
+mysql> select join_year from Employee where join_year= (select join_year from Employee where emp_id=3);
++-----------+
+| join_year |
++-----------+
+|      2020 |
+|      2020 |
+|      2020 |
++-----------+
+3 rows in set (0.00 sec)
+
+mysql> select join_year,emp_name from Employee where join_year= (select join_year from Employee where emp_id=3);
++-----------+----------+
+| join_year | emp_name |
++-----------+----------+
+|      2020 | Amit     |
+|      2020 | Anjali   |
+|      2020 | Sanjay   |
++-----------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select emp_name,salary from employee where salary>(select salary from Employee where emp_name="Rahul");
++----------+--------+
+| emp_name | salary |
++----------+--------+
+| Amit     |  70000 |
+| Sneha    |  80000 |
+| Vikas    |  72000 |
+| Anjali   |  65000 |
+| Rohit    |  90000 |
+| Pooja    |  62000 |
+| Arjun    |  75000 |
+| Kavita   |  68000 |
++----------+--------+
+8 rows in set (0.01 sec)
+
+mysql> select emp_id,emp_name from Employee where dept_id exist (select dept_id from department);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'exist (select dept_id from department)' at line 1
+mysql> select emp_id,emp_name from Employee where dept_id in (select dept_id from department);
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      2 | Priya    |
+|      8 | Anjali   |
+|     14 | Kavita   |
+|      1 | Rahul    |
+|      4 | Sneha    |
+|      9 | Rohit    |
+|     11 | Arjun    |
+|      3 | Amit     |
+|      6 | Neha     |
+|     12 | Meena    |
+|      5 | Karan    |
+|     10 | Pooja    |
+|      7 | Vikas    |
+|     13 | Sanjay   |
++--------+----------+
+14 rows in set (0.01 sec)
+
+mysql> select emp_id,emp_name from Employee where emp_id in (select emp_id from project where budget>50000);
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      1 | Rahul    |
+|      4 | Sneha    |
+|      3 | Amit     |
+|      9 | Rohit    |
+|     10 | Pooja    |
+|     11 | Arjun    |
++--------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select emp_id,emp_name from Employee where salary>(select avg(salary)from Employee group by dept_id);
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select emp_id,emp_name from Employee where salary > in (select avg(salary)from Employee group by dept_id);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'in (select avg(salary)from Employee group by dept_id)' at line 1
+mysql> select emp_id,emp_name from Employee e where salary > (select avg(salary)from Employee p where p.dept);
+ERROR 1054 (42S22): Unknown column 'p.dept' in 'where clause'
+mysql> select emp_id,emp_name from Employee e where salary > (select avg(salary)from Employee p where p.dept_id=e.dept_id);
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      3 | Amit     |
+|      4 | Sneha    |
+|      7 | Vikas    |
+|      8 | Anjali   |
+|      9 | Rohit    |
+|     10 | Pooja    |
+|     14 | Kavita   |
++--------+----------+
+7 rows in set (0.01 sec)
+
+mysql> select dept_id,dept_name from department where dept_id is not in (select dept_id from Employee);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'in (select dept_id from Employee)' at line 1
+mysql> select dept_id,dept_name from department where dept_id not in (select dept_id from Employee);
++---------+-----------+
+| dept_id | dept_name |
++---------+-----------+
+|       6 | Support   |
++---------+-----------+
+1 row in set (0.01 sec)
+
+mysql> select emp_name,salary from Employew where salary>(select Avg(salary) from Employee where dept_id="IT");
+ERROR 1146 (42S02): Table 'subquery.employew' doesn't exist
+mysql> select emp_name,salary from Employee where salary>(select Avg(salary) from Employee where dept_id="IT");
+Empty set, 1 warning (0.01 sec)
+
+mysql> select emp_name from Employee where salary>(select Avg(salary) from Employee where dept_id="IT");
+Empty set, 1 warning (0.00 sec)
+
+mysql> select emp_name from Employee e where salary>(select Avg(salary) from Employee p where e.dept_id=p.dept_id);
++----------+
+| emp_name |
++----------+
+| Amit     |
+| Sneha    |
+| Vikas    |
+| Anjali   |
+| Rohit    |
+| Pooja    |
+| Kavita   |
++----------+
+7 rows in set (0.00 sec)
+
+mysql> select emp_name from Employee e where salary>(select Avg(salary) from Employee p where e.dept_id=p.dept_id group by dept_name having dept_name="IT");
+ERROR 1054 (42S22): Unknown column 'dept_name' in 'group statement'
+mysql> select emp_name from Employee where salary>(select Avg(salary) from Employee where dept_id=(select dept_id from department where dept_name="IT"));
++----------+
+| emp_name |
++----------+
+| Sneha    |
+| Rohit    |
++----------+
+2 rows in set (0.01 sec)
+
+mysql> select emp_id,emp_name from Employee where emp_id in (select emp_id from project where budget>(select max(budget) from project) );
+Empty set (0.00 sec)
+
+mysql> select emp_id,emp_name from Employee where emp_id in (select emp_id from project where budget>=(select max(budget) from project));
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      9 | Rohit    |
++--------+----------+
+1 row in set (0.01 sec)
+
+mysql> select emp_id,emp_name from Employee where salary>(select salary from Employee where dept_id=2);
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select emp_id,emp_name from Employee where salary ib(select salary from Employee where dept_id=2);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ib(select salary from Employee where dept_id=2)' at line 1
+mysql> select emp_id,emp_name from Employee where salary in(select salary from Employee where dept_id=2);
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      1 | Rahul    |
+|      4 | Sneha    |
+|      9 | Rohit    |
+|     11 | Arjun    |
++--------+----------+
+4 rows in set (0.01 sec)
+
+mysql> select emp_id,emp_name from Employee where salary> any (select salary from Employee where dept_id=2);
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      3 | Amit     |
+|      4 | Sneha    |
+|      7 | Vikas    |
+|      8 | Anjali   |
+|      9 | Rohit    |
+|     10 | Pooja    |
+|     11 | Arjun    |
+|     14 | Kavita   |
++--------+----------+
+8 rows in set (0.00 sec)
+
+mysql> select emp_name,salary from Employee where salary<(select max(salary)from Employee group by emp_id);
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select emp_name,salary from Employee where salary< any (select max(salary)from Employee group by emp_id);
++----------+--------+
+| emp_name | salary |
++----------+--------+
+| Rahul    |  60000 |
+| Priya    |  55000 |
+| Amit     |  70000 |
+| Sneha    |  80000 |
+| Karan    |  50000 |
+| Neha     |  45000 |
+| Vikas    |  72000 |
+| Anjali   |  65000 |
+| Pooja    |  62000 |
+| Arjun    |  75000 |
+| Meena    |  48000 |
+| Sanjay   |  53000 |
+| Kavita   |  68000 |
++----------+--------+
+13 rows in set (0.00 sec)
+
+mysql> select emp_name,salary from Employee where salary< all(select max(salary) from Employee group by emp_id);
+Empty set (0.00 sec)
+
+mysql
