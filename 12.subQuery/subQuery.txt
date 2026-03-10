@@ -524,4 +524,239 @@ mysql> select emp_name,salary from Employee where salary< any (select max(salary
 mysql> select emp_name,salary from Employee where salary< all(select max(salary) from Employee group by emp_id);
 Empty set (0.00 sec)
 
-mysql
+s.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++-----------------------+
+| Database              |
++-----------------------+
+| abc                   |
+| billing               |
+| college               |
+| composite_primary_key |
+| information_schema    |
+| j2025                 |
+| mock                  |
+| mydb                  |
+| mysql                 |
+| one_to_many           |
+| one_to_one            |
+| onlineexamdb          |
+| performance_schema    |
+| pp                    |
+| pp50                  |
+| practice              |
+| subquery              |
+| sys                   |
+| team                  |
+| temp                  |
+| voice_tasks           |
++-----------------------+
+21 rows in set (0.02 sec)
+
+mysql> use subquery;
+Database changed
+mysql> show tables;
++--------------------+
+| Tables_in_subquery |
++--------------------+
+| department         |
+| employee           |
+| project            |
++--------------------+
+3 rows in set (0.01 sec)
+
+mysql> select salary from Employee where salary<(select max(salary) from employee group by dept_id);
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select salary from Employee where salary< all(select max(salary) from employee group by dept_id);
++--------+
+| salary |
++--------+
+|  60000 |
+|  55000 |
+|  50000 |
+|  45000 |
+|  48000 |
+|  53000 |
++--------+
+6 rows in set (0.00 sec)
+
+mysql> select emp_name,salary from Employee where salary< all(select max(salary) from employee group by dept_id);
++----------+--------+
+| emp_name | salary |
++----------+--------+
+| Rahul    |  60000 |
+| Priya    |  55000 |
+| Karan    |  50000 |
+| Neha     |  45000 |
+| Meena    |  48000 |
+| Sanjay   |  53000 |
++----------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select emp_name,salary from Employee where salary< all(select max(salary) from employee where emp_id=dept_id);
++----------+--------+
+| emp_name | salary |
++----------+--------+
+| Rahul    |  60000 |
+| Priya    |  55000 |
+| Karan    |  50000 |
+| Neha     |  45000 |
+| Anjali   |  65000 |
+| Pooja    |  62000 |
+| Meena    |  48000 |
+| Sanjay   |  53000 |
+| Kavita   |  68000 |
++----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select emp_name,salary from Employee where salary< (select max(salary) from employee where emp_id=dept_id);
++----------+--------+
+| emp_name | salary |
++----------+--------+
+| Rahul    |  60000 |
+| Priya    |  55000 |
+| Karan    |  50000 |
+| Neha     |  45000 |
+| Anjali   |  65000 |
+| Pooja    |  62000 |
+| Meena    |  48000 |
+| Sanjay   |  53000 |
+| Kavita   |  68000 |
++----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select emp_id,emp_name from Employee where location=(select location from department where department="sales");
+ERROR 1054 (42S22): Unknown column 'location' in 'where clause'
+mysql> select emp_id,emp_name from Employee where emp_id=(select dept_id from department where location=(select location from department) where dept_name"Sales");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where dept_name"Sales")' at line 1
+mysql> select emp_id,emp_name from employee where dept_id=(select dept_id from department where location=(select location from department where dept_name=Sales))
+    -> ;
+ERROR 1054 (42S22): Unknown column 'Sales' in 'where clause'
+mysql> select emp_id,emp_name from employee where dept_id=(select dept_id from department where location=(select location from department where dept_name=sales));
+ERROR 1054 (42S22): Unknown column 'sales' in 'where clause'
+mysql> select emp_id,emp_name from employee where dept_id=(select dept_id from department where location=(select location from department where dept_name="sales"));
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      3 | Amit     |
+|      6 | Neha     |
+|     12 | Meena    |
++--------+----------+
+3 rows in set (0.01 sec)
+
+mysql> select emp_id,emp_name from Employee where emp_id not in(select emp_id from project);
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      5 | Karan    |
+|      6 | Neha     |
+|      8 | Anjali   |
+|     12 | Meena    |
+|     13 | Sanjay   |
+|     14 | Kavita   |
++--------+----------+
+6 rows in set (0.01 sec)
+
+mysql> select dept_id,dept_name from department where dept_id=(select Avg(salary) from Employee group by dept_id having Avg(salary)>60000);
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select dept_id,dept_name from department where dept_id in(select Avg(salary) from Employee group by dept_id having Avg(salary)>60000);
+Empty set (0.00 sec)
+
+mysql> select dept_id,dept_name from Employee where dept_id in(select Avg(salary) from Employee group by dept_id having Avg(salary)>60000);
+ERROR 1054 (42S22): Unknown column 'dept_name' in 'field list'
+mysql> select dept_id,emp_name from Employee where dept_id in(select Avg(salary) from Employee group by dept_id having Avg(salary)>60000);
+Empty set (0.00 sec)
+
+mysql> select dept_id from Employee where dept_id in(select Avg(salary) from Employee group by dept_id having Avg(salary)>60000);
+Empty set (0.00 sec)
+
+mysql> select *from Employee where dept_id = (select dept_id from department where dept_id=3);
++--------+----------+---------+--------+-----------+
+| emp_id | emp_name | dept_id | salary | join_year |
++--------+----------+---------+--------+-----------+
+|      3 | Amit     |       3 |  70000 |      2020 |
+|      6 | Neha     |       3 |  45000 |      2021 |
+|     12 | Meena    |       3 |  48000 |      2022 |
++--------+----------+---------+--------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select *from Employee where dept_id > A (select salary from department where dept_id=3);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select salary from department where dept_id=3)' at line 1
+mysql> select *from Employee where salary > ALL(select salary from Employee where dept_id=3);
++--------+----------+---------+--------+-----------+
+| emp_id | emp_name | dept_id | salary | join_year |
++--------+----------+---------+--------+-----------+
+|      4 | Sneha    |       2 |  80000 |      2018 |
+|      7 | Vikas    |       5 |  72000 |      2019 |
+|      9 | Rohit    |       2 |  90000 |      2023 |
+|     11 | Arjun    |       2 |  75000 |      2021 |
++--------+----------+---------+--------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> select emp_id,emp_name from employee where salary>(select avg(salary) from project where emp_id=(select emp_id from Employee));
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select emp_id,emp_name from employee where salary> in(select avg(salary) from project where emp_id=(select emp_id from Employee));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'in(select avg(salary) from project where emp_id=(select emp_id from Employee))' at line 1
+mysql> select emp_id,emp_name from employee where salary> any(select avg(salary) from project where emp_id=(select emp_id from Employee));
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select emp_id,emp_name from employee where salary> any(select avg(salary) from project where emp_id= any(select emp_id from Employee));
+Empty set (0.00 sec)
+
+mysql> select emp_id,emp_name from employee where salary> (select avg(salary) from employee where emp_id=(select emp_id from project));
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select emp_id,emp_name from employee where salary> (select avg(salary) from employee where emp_id in (select emp_id from project));
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      4 | Sneha    |
+|      7 | Vikas    |
+|      9 | Rohit    |
+|     11 | Arjun    |
++--------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select emp_name from employee where emp_id=(select emp_id from project where budget>(select(avg(budget) from project)));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from project)))' at line 1
+mysql> select emp_name from employee where emp_id=(select emp_id from project where budget>(select avg(budget) from project));
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select emp_name from employee where emp_id=(select emp_id from project where budget> in (select avg(budget) from project));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'in (select avg(budget) from project))' at line 1
+mysql> select emp_name from employee where emp_id= all(select emp_id from project where budget> (select avg(budget) from project));
+Empty set (0.00 sec)
+
+mysql> select emp_name from employee where emp_id in (select emp_id from project where budget> (select avg(budget) from project));
++----------+
+| emp_name |
++----------+
+| Sneha    |
+| Amit     |
+| Rohit    |
+| Pooja    |
++----------+
+4 rows in set (0.00 sec)
+
+mysql> select emp_name,emp_id from employee where emp_id in (select emp_id from project where budget> (select avg(budget) from project));
++----------+--------+
+| emp_name | emp_id |
++----------+--------+
+| Sneha    |      4 |
+| Amit     |      3 |
+| Rohit    |      9 |
+| Pooja    |     10 |
++----------+--------+
+4 rows in set (0.00 sec)
+
+
+mysql> select emp_id,emp_name from Employee where dept_id=(select dept_id from employee group by dept_id order by avg(salary) desc limit 1);
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      1 | Rahul    |
+|      4 | Sneha    |
+|      9 | Rohit    |
+|     11 | Arjun    |
++--------+----------+
+4 rows in set (0.01 sec)
