@@ -750,6 +750,11 @@ mysql> select emp_name,emp_id from employee where emp_id in (select emp_id from 
 4 rows in set (0.00 sec)
 
 
+
+
+Find the department with the highest average salary and display employees of that department.
+
+
 mysql> select emp_id,emp_name from Employee where dept_id=(select dept_id from employee group by dept_id order by avg(salary) desc limit 1);
 +--------+----------+
 | emp_id | emp_name |
@@ -760,3 +765,89 @@ mysql> select emp_id,emp_name from Employee where dept_id=(select dept_id from e
 |     11 | Arjun    |
 +--------+----------+
 4 rows in set (0.01 sec)
+
+Display employees whose salary is greater than the salary of every employee in the HR department.
+
+Find employees whose salary is greater than the maximum salary of employees working in 'Pune' location departments.
+mysql> select emp_id,emp_name from Employee where salary>(select avg(salary) from Employee group by join_year having join_year=2020);
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      3 | Amit     |
+|      4 | Sneha    |
+|      7 | Vikas    |
+|      8 | Anjali   |
+|      9 | Rohit    |
+|     11 | Arjun    |
+|     14 | Kavita   |
++--------+----------+
+
+Display employees who are working on projects handled by employees earning more than 70000.
+
+mysql> select emp_name,emp_id from Employee where emp_id in (select emp_id from project where emp_id in (select emp_id from employee where salary>70000));
++----------+--------+
+| emp_name | emp_id |
++----------+--------+
+| Sneha    |      4 |
+| Vikas    |      7 |
+| Rohit    |      9 |
+| Arjun    |     11 |
++----------+--------+
+4 rows in set (0.00 sec)
+
+Find employees whose salary is greater than the average salary of employees who joined after 2020.
+
+
+mysql> select emp_id,emp_name from Employee where salary>(select avg(salary) from Employee group by join_year having join_year=2020);
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      3 | Amit     |
+|      4 | Sneha    |
+|      7 | Vikas    |
+|      8 | Anjali   |
+|      9 | Rohit    |
+|     11 | Arjun    |
+|     14 | Kavita   |
++--------+----------+
+7 rows in set (0.00 sec)
+
+
+Display employees who belong to departments where more than 3 employees work.
+
+mysql> select emp_id,emp_name from employee where dept_id in(select dept_id from employee group by dept_id having count(*)>3);
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      1 | Rahul    |
+|      4 | Sneha    |
+|      9 | Rohit    |
+|     11 | Arjun    |
++--------+----------+
+4 rows in set (0.00 sec)
+
+Find employees who work on projects where the budget is greater than the average budget of all projects.
+mysql> select emp_id,emp_name from employee where emp_id= any(select emp_id from project where budget> (select avg(budget) from project));
++--------+----------+
+| emp_id | emp_name |
++--------+----------+
+|      4 | Sneha    |
+|      3 | Amit     |
+|      9 | Rohit    |
+|     10 | Pooja    |
++--------+----------+
+4 rows in set (0.01 sec)
+
+Display employees whose salary is greater than the salary of every employee in the HR department.
+
+mysql> select emp_name,emp_id from employee where salary> all(select salary from employee where dept_id=(select dept_id from department where dept_name="HR"));
++----------+--------+
+| emp_name | emp_id |
++----------+--------+
+| Amit     |      3 |
+| Sneha    |      4 |
+| Vikas    |      7 |
+| Rohit    |      9 |
+| Arjun    |     11 |
++----------+--------+
+5 rows in set (0.03 sec)
