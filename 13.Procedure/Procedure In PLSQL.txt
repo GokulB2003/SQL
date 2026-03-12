@@ -1,0 +1,65 @@
+mysql> delimiter $$;
+mysql> create procedure cube(in no int(5),out result int(5))
+    -> begin
+    -> set result=no*no*no;
+    -> end
+    -> $$
+    -> ^C
+mysql> delimiter $$
+mysql> create procedure cube(in no int(5),out result int(5))
+    -> begin
+    -> set result=no*no*no;
+    -> delimiter $$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'cube(in no int(5),out result int(5))
+begin
+set result=no*no*no;
+delimiter' at line 1
+mysql> create procedure cube(in no int(5),out result int(5))
+    -> begin
+    -> set result=no*no*no;
+    -> end
+    -> $$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'cube(in no int(5),out result int(5))
+begin
+set result=no*no*no;
+end' at line 1
+mysql> delimiter $$
+mysql> create procedure cube(in no int(5),out result int(5))
+    -> begin
+    -> set result=no*no*no;
+    -> end
+    -> $$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'cube(in no int(5),out result int(5))
+begin
+set result=no*no*no;
+end' at line 1
+mysql> DROP PROCEDURE IF EXISTS cube;
+    -> $$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'cube' at line 1
+mysql> delimiter ;
+mysql> DROP PROCEDURE IF EXISTS cube;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'cube' at line 1
+mysql> ^C
+mysql> DELIMITER ;
+mysql> DROP PROCEDURE IF EXISTS cube;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'cube' at line 1
+mysql> delimiter $$
+mysql> create procedure cube_r(in no int(5),out result int(5))
+    -> begin
+    -> set result=no*no*no;
+    -> end
+    -> $$
+Query OK, 0 rows affected, 2 warnings (0.01 sec)
+
+mysql> call cube_r(3,@result);
+    -> $$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select @result;
+    -> $$
++---------+
+| @result |
++---------+
+|      27 |
++---------+
+1 row in set (0.00 sec)
