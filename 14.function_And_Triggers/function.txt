@@ -1,0 +1,226 @@
+
+mysql> show databases;
++-----------------------+
+| Database              |
++-----------------------+
+| abc                   |
+| billing               |
+| college               |
+| composite_primary_key |
+| information_schema    |
+| j2025                 |
+| mock                  |
+| mydb                  |
+| mysql                 |
+| one_to_many           |
+| one_to_one            |
+| onlineexamdb          |
+| performance_schema    |
+| pp                    |
+| pp50                  |
+| practice              |
+| subquery              |
+| sys                   |
+| team                  |
+| temp                  |
+| voice_tasks           |
++-----------------------+
+21 rows in set (0.10 sec)
+
+mysql> show tables
+    -> ;
++--------------------+
+| Tables_in_subquery |
++--------------------+
+| account            |
+| department         |
+| employee           |
+| ministmt           |
+| project            |
+| student            |
++--------------------+
+6 rows in set (0.03 sec)
+
+mysql> select *from account;
++-------+-------+---------+
+| accId | name  | balance |
++-------+-------+---------+
+|     1 | Ganu  |    3000 |
+|     2 | Pinki |    3900 |
++-------+-------+---------+
+2 rows in set (0.01 sec)
+
+
+mysql> delimiter $$
+mysql> create trigger smop after update on account for each row
+    -> begin
+    -> if OLD.balance>NEW.balance then
+    ->  insert into ministmt values('0',OLD.accId,OLD.balance,NEW.balance,curdate());
+    -> else
+    ->  insert into ministmt values('0',OLD.accId,OLD.balance,NEW.balance,curdate());
+    -> end if;
+    -> end;
+    -> $$
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> update account set balance=balance-50;
+    -> $$
+Query OK, 2 rows affected (0.03 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select *from ministmt;
+    -> $$
++----------+-------+-------------+---------+------------+
+| trans_Id | accId | currBalance | new_bal | trans_date |
++----------+-------+-------------+---------+------------+
+|        1 |     1 |        3000 |    2900 | 2026-03-14 |
+|        2 |     2 |        4000 |    3900 | 2026-03-14 |
+|        3 |     1 |        2900 |    3000 | 2026-03-14 |
+|        4 |     1 |        3000 |    2950 | 2026-03-14 |
+|        5 |     1 |        3000 |    2950 | 2026-03-14 |
+|        6 |     2 |        3900 |    3850 | 2026-03-14 |
+|        7 |     2 |        3900 |    3850 | 2026-03-14 |
++----------+-------+-------------+---------+------------+
+7 rows in set (0.00 sec)
+
+mysql> delimiter $$
+mysql> create function getSqr(num int(5)) returns int(5) DETERMINISTIC
+    -> begin
+    -> declare result int(5);
+    -> set result=num*num;
+    -> return result;
+    -> end;
+    -> $$
+Query OK, 0 rows affected, 3 warnings (0.03 sec)
+
+mysql> select getSqr(10);
+    -> $$
++------------+
+| getSqr(10) |
++------------+
+|        100 |
++------------+
+1 row in set (0.01 sec)
+
+mysql> create function add_num(num1 int,num2 int) returns int(5) DETERMINISTIC
+    -> begin
+    -> declare result int;
+    -> set result=num1+num2;
+    -> return result;
+    -> end;
+    -> ##
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> select add_num(10,20);
+    -> ##
++----------------+
+| add_num(10,20) |
++----------------+
+|             30 |
++----------------+
+1 row in set (0.00 sec)
+
+get name using the ID
+
+mysql> create function getName(accid int) returns varchar(40) DETERMINISTIC
+    -> begin
+    -> declare aname varchar(40);
+    -> select name into aname from account where accId=accid;
+    -> return aname;
+    -> end;
+    -> ##
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select getName(1);
+    -> ##
+ERROR 1172 (42000): Result consisted of more than one row
+mysql> select *from account;
+    -> #
+    -> ##
++-------+-------+---------+
+| accId | name  | balance |
++-------+-------+---------+
+|     1 | Ganu  |    2950 |
+|     2 | Pinki |    3850 |
++-------+-------+---------+
+2 rows in set (0.00 sec)
+
+
+mysql> create function getNam(accid int) returns varchar(40) DETERMINISTIC
+    -> begin
+    -> declare aname varchar(40);
+    -> select name into aname from account where accId=accid limit 1;
+    -> return aname;
+    -> end;
+    -> ##
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select gatNam(1);
+    -> ##
+
+mysql> delimiter ;
+mysql> select getNam(1);
++-----------+
+| getNam(1) |
++-----------+
+| Ganu      |
++-----------+
+1 row in set (0.01 sec)
+
+
+mysql> create function getBal(accid int(5)) returns int(5) DETERMINISTIC
+    -> begin
+    -> declare result int(5);
+    -> select balance into result from account where accid=accId limit 1;
+    -> return result;
+    -> end;
+    -> ##
+Query OK, 0 rows affected, 3 warnings (0.03 sec)
+
+ERROR:
+No query specified
+
+mysql> select getBal(1);
+    -> ##
++-----------+
+| getBal(1) |
++-----------+
+|      2950 |
++-----------+
+1 row in set (0.00 sec)
+
+ERROR:
+No query specified
+
+mysql> select getBal(1) as balance;
+    -> ##
++---------+
+| balance |
++---------+
+|    2950 |
++---------+
+1 row in set (0.00 sec)
+
+
+
+
+
+ create function and calculate its cube.
+
+mysql> create function FindCube(num int(5)) returns int(5) DETERMINISTIC
+    -> begin
+    -> declare result int(5);
+    -> set result=num*num*num;
+    -> return result;
+    -> end;
+    -> ##
+Query OK, 0 rows affected, 3 warnings (0.01 sec)
+
+mysql> select FindCube(3);
+    -> ##
++-------------+
+| FindCube(3) |
++-------------+
+|          27 |
++-------------+
+1 row in set (0.00 sec)
