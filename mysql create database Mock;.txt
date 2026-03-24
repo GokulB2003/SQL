@@ -1,0 +1,139 @@
+mysql> create database Mock;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use Mock;
+Database changed
+mysql> create table Hotel(hotel_id int primary key,hotel_name varchar(100),location varchar(100),rating Decimal(2,1));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> insert into Hotel values(1,"Taj","pune",5.5);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into Hotel values(2,"Sachin","nagar",5.3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Hotel values(3,"Dhawade","pune",5.1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Hotel values(4,"Zakas","mumbai",3.3);
+Query OK, 1 row affected (0.04 sec);
+
+
+mysql> select b.customer_id,c.full_name,r.room_number from customer c inner join booking b on c.customer_id=b.customer_id inner join room r on b.room_id=r.room_id;
++-------------+-----------+-------------+
+| customer_id | full_name | room_number |
++-------------+-----------+-------------+
+|           1 | Ram       | 10          |
+|           1 | Ram       | 10          |
+|           2 | Sham      | 10          |
+|           3 | vijay     | 12          |
++-------------+-----------+-------------+
+4 rows in set (0.00 sec)
+
+
+mysql> select r.room_number,r.room_type,r.price_per_night,r.is_available,h.hotel_name,h.location,h.rating from Room r inner join Hotel h on r.hotel_id=h.hotel_id;
++-------------+------------+-----------------+--------------+------------+----------+--------+
+| room_number | room_type  | price_per_night | is_available | hotel_name | location | rating |
++-------------+------------+-----------------+--------------+------------+----------+--------+
+| 10          | AC         |         1000.00 |            1 | Taj        | pune     |    5.5 |
+| 10          | AC         |         2000.00 |            1 | Taj        | pune     |    5.5 |
+| 10          | Without_AC |         2000.00 |            1 | Sachin     | nagar    |    5.3 |
+| 12          | Without_AC |         1500.00 |            0 | Dhawade    | pune     |    5.1 |
+| 14          | AC         |         1700.00 |            0 | Zakas      | mumbai   |    3.3 |
++-------------+------------+-----------------+--------------+------------+----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select b.customer_id,c.full_name,r.room_id,r.room_number,h.hotel_name from customer c inner join booking b on c.customer_id=b.customer_id inner join room r on b.room_id=r.room_id inner join Hotel h on r.hotel_id=h.hotel_id where h.hotel_name="Taj";
++-------------+-----------+---------+-------------+------------+
+| customer_id | full_name | room_id | room_number | hotel_name |
++-------------+-----------+---------+-------------+------------+
+|           1 | Ram       |       1 | 10          | Taj        |
+|           1 | Ram       |       1 | 11          | Taj        |
++-------------+-----------+---------+-------------+------------+
+2 rows in set (0.01 sec)
+
+
+mysql> select r.room_id,r.is_available,h.hotel_name,h.location from Room r left join hotel h on r.hotel_id=h.hotel_id;
++---------+--------------+------------+----------+
+| room_id | is_available | hotel_name | location |
++---------+--------------+------------+----------+
+|       1 |            1 | Taj        | pune     |
+|       2 |            1 | Taj        | pune     |
+|       3 |            1 | Sachin     | nagar    |
+|       4 |            0 | Dhawade    | pune     |
+|       5 |            0 | Zakas      | mumbai   |
++---------+--------------+------------+----------+
+5 rows in set (0.01 sec)
+
+mysql> select b.booking_id,b.room_id,b.total_amount,r.room_type,h.hotel_name from booking b inner join room r on b.room_id=r.room_id inner join hotel h on r.hotel_id=h.hotel_id where b.total_amount>5000;
++------------+---------+--------------+------------+------------+
+| booking_id | room_id | total_amount | room_type  | hotel_name |
++------------+---------+--------------+------------+------------+
+|          4 |       4 |      6000.00 | Without_AC | Dhawade    |
+|          5 |       6 |      7000.00 | AC         | Zakas      |
++------------+---------+--------------+------------+------------+
+2 rows in set (0.00 sec)
+
+
+mysql> select b.customer_id,c.full_name from booking b inner join customer c on c.customer_id=b.booking_id group by b.customer_id,c.full_name;
++-------------+-----------+
+| customer_id | full_name |
++-------------+-----------+
+|           1 | Ram       |
+|           1 | Sham      |
+|           2 | vijay     |
+|           3 | Manoj     |
++-------------+-----------+
+4 rows in set (0.00 sec)
+
+
+
+mysql> select c.full_name,count(b.customer_id) from booking b inner join customer c on b.customer_id=c.customer_id group by b.customer_id having count(b.customer_id)>1;
++-----------+----------------------+
+| full_name | count(b.customer_id) |
++-----------+----------------------+
+| Ram       |                    2 |
+| vijay     |                    2 |
++-----------+----------------------+
+
+
+
+
+
+mysql> select b.room_id,r.room_type from booking b inner join room r on b.room_id=r.room_id;
++---------+------------+
+| room_id | room_type  |
++---------+------------+
+|       1 | AC         |
+|       1 | AC         |
+|       3 | Without_AC |
+|       4 | Without_AC |
+|       6 | AC         |
++---------+------------+
+5 rows in set (0.00 sec)
+
+
+Show customer details who booked the most expensive room.
+mysql> select c.full_name from customer c inner join booking b on c.customer_id=b.customer_id inner join room r on b.room_id=r.room_id group by c.full_name having max(r.price_per_night);
++-----------+
+| full_name |
++-----------+
+| Ram       |
+| Sham      |
+| vijay     |
++-----------+
+3 rows in set (0.00 sec)
+
+12. Find customers who have booked rooms in hotels located in 'Mumbai'. 
+mysql> select c.full_name,h.hotel_name from customer c inner join booking b on c.customer_id=b.booking_id inner join room r on b.room_id=r.room_id inner join hotel h on r.hotel_id=h.hotel_id where location="pune";
++-----------+------------+
+| full_name | hotel_name |
++-----------+------------+
+| Ram       | Taj        |
+| Sham      | Taj        |
+| Manoj     | Dhawade    |
++-----------+------------+
+3 rows in set (0.00 sec)
+
+3 rows in set (0.00 sec)
+
